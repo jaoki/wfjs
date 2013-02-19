@@ -1,18 +1,21 @@
 var wfjs = (function () {
-var wfjs;
-return wfjs;
-})();
+var wfjs1 = {};
 
-var SVGNS = "http://www.w3.org/2000/svg";
+wfjs1.SVGNS = "http://www.w3.org/2000/svg";
 
-var Svg = (function () {
+wfjs1.text_default_options = {
+	fill : "black",
+	"font-size" : "1em",
+};
+
+wfjs1.Svg = (function () {
     function Svg(targetId) {
         this.targetId = targetId;
 		this.target = document.getElementById(targetId);
 
-		var svg = document.createElementNS(SVGNS, "svg");
+		var svg = document.createElementNS(wfjs1.SVGNS, "svg");
 		svg.setAttribute("id", "wfjs_svg");
-		svg.setAttribute("xmlns", this.SVGNS);
+//		svg.setAttribute("xmlns", this.SVGNS);
 		svg.setAttribute("version", "1.1");
 		this.target.appendChild(svg);
 		this.svg = svg;
@@ -22,7 +25,7 @@ var Svg = (function () {
     return Svg;
 })();
 
-var Circle = (function () {
+wfjs1.Circle = (function () {
     function Circle(svg, x, y, label, circle_options, text_options) {
         this.svg = svg;
         this.x = x;
@@ -38,7 +41,7 @@ var Circle = (function () {
 //		var textId = "wfjs_circle_" + this.circles.length + "_text";
 		var textId = "wfjs_circle__text";
 
-		var circle = document.createElementNS(SVGNS, "circle");
+		var circle = document.createElementNS(wfjs1.SVGNS, "circle");
 		circle.setAttribute("id", circleId);
 
 		for(var attr in this.circle_options){
@@ -49,14 +52,14 @@ var Circle = (function () {
 //		circle.addEventListener("mousedown", this._onMouseDown, false);
 		this.svg.svg.appendChild(circle);
         
-		var text = document.createElementNS(SVGNS, "text");
+		var text = document.createElementNS(wfjs1.SVGNS, "text");
 
 		text.setAttribute("id", textId);
 		text.textContent = this.label;
 
-//		for(var attr in this.text_default_options){
-//			text.setAttribute(attr, this.text_default_options[attr]);
-//		}
+		for(var attr in wfjs1.text_default_options){
+			text.setAttribute(attr, wfjs1.text_default_options[attr]);
+		}
 
 		if(this.text_options !=null && this.text_options !== undefined){
 			for(var attr in this.text_options){
@@ -77,12 +80,16 @@ var Circle = (function () {
     return Circle;
 })();
 
+return wfjs1;
+})();
 
 
 
 
 
-var wfjs1 = {
+
+
+var wfjs10 = {
 	_wfjs : null,
 	SVGNS : "http://www.w3.org/2000/svg",
 	target: null,
