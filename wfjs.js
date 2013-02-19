@@ -16,7 +16,6 @@ var wfjs = {
 		this.target.appendChild(svg);
 		this.svg = svg;
 
-
 	},
 	circle : function(label, circle_options){
 		var circle = document.createElementNS(this.SVGNS, "circle");
