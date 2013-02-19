@@ -1,3 +1,55 @@
+var SVGNS = "http://www.w3.org/2000/svg";
+
+var Svg = (function () {
+    function Svg(targetId) {
+        this.targetId = targetId;
+		this.target = document.getElementById(targetId);
+
+		var svg = document.createElementNS(this.SVGNS, "svg");
+		svg.setAttribute("id", "wfjs_svg");
+		svg.setAttribute("xmlns", this.SVGNS);
+		svg.setAttribute("version", "1.1");
+		this.target.appendChild(svg);
+		this.svg = svg;
+//		svg.addEventListener("mouseup", this._onMouseUp, false);
+    }
+
+    return Svg;
+})();
+
+var Circle = (function () {
+    function Circle(svg, x, y, label, circle_options) {
+        this.svg = svg;
+        this.x = x;
+        this.y = y;
+        this.label = label;
+        this.circle_options = circle_options;
+    }
+
+    Circle.prototype.show = function () {
+//		var circleId = "wfjs_circle_" + this.circles.length;
+		var circleId = "wfjs_circle_";
+//		var textId = "wfjs_circle_" + this.circles.length + "_text";
+		var textId = "wfjs_circle__text";
+
+		var circle = document.createElementNS(SVGNS, "circle");
+		circle.setAttribute("id", circleId);
+
+		for(var attr in this.circle_options){
+			circle.setAttribute(attr, this.circle_options[attr]);
+		}
+		circle.setAttribute("cx", this.x);
+		circle.setAttribute("cy", this.y);
+//		circle.addEventListener("mousedown", this._onMouseDown, false);
+		this.svg.appendChild(circle);
+        
+    };
+    return Circle;
+})();
+
+// var i = new Item(200);
+// i.showPrice();
+
 var wfjs = {
 	_wfjs : null,
 	SVGNS : "http://www.w3.org/2000/svg",
@@ -5,7 +57,8 @@ var wfjs = {
 	svg: null,
 
 	text_default_options : {
-		fill : "black"
+		fill : "black",
+		"font-size" : "1em",
 	},
 
 	circles : [],
@@ -19,6 +72,7 @@ var wfjs = {
 		svg.setAttribute("version", "1.1");
 		this.target.appendChild(svg);
 		this.svg = svg;
+		svg.addEventListener("mouseup", this._onMouseUp, false);
 
 		this.circles.getById = function(id){
 			for(var i = 0; i < this.length; i++){
@@ -30,7 +84,7 @@ var wfjs = {
 
 	},
 
-	circle : function(x, y, label, circle_options){
+	circle : function(x, y, label, circle_options, text_options){
 		var circleId = "wfjs_circle_" + this.circles.length;
 		var textId = "wfjs_circle_" + this.circles.length + "_text";
 
@@ -43,7 +97,6 @@ var wfjs = {
 		circle.setAttribute("cx", x);
 		circle.setAttribute("cy", y);
 		circle.addEventListener("mousedown", this._onMouseDown, false);
-		document.addEventListener("mouseup", this._onMouseUp, false);
 		this.svg.appendChild(circle);
 
 		var text = document.createElementNS(this.SVGNS, "text");
@@ -55,8 +108,11 @@ var wfjs = {
 			text.setAttribute(attr, this.text_default_options[attr]);
 		}
 
-//		text.setAttribute("fill","red");
-//		text.setAttribute("font-size","20");
+		if(text_options !=null && text_options !== undefined){
+			for(var attr in text_options){
+				text.setAttribute(attr, text_options[attr]);
+			}
+		}
 
 		this.svg.appendChild(text);
 		var rect = text.getBBox();
