@@ -8,16 +8,16 @@
 	<script type="text/javascript">
 
 $(function() {
-	wfjs.init("div_target");
+	wfjs1.init("div_target");
 
-	wfjs.circle(80, 30, "aaa", {
+	wfjs1.circle(80, 30, "aaa", {
 		r: "30",
 		stroke: "black",
 		"stroke-width": "2",
 		fill: "yellow",
 	});
 
-	wfjs.circle(80, 120, "bbb", {
+	wfjs1.circle(80, 120, "bbb", {
 		r: "30",
 		stroke: "black",
 		"stroke-width": "2",
@@ -25,6 +25,14 @@ $(function() {
 	});
 
 var s1 = new Svg("div_target2");
+var c1 = new Circle(s1, 10, 30, "ccc", {
+		r: "30",
+		stroke: "black",
+		"stroke-width": "2",
+		fill: "yellow",
+});
+c1.show();
+
 
 });
 

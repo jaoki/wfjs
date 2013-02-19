@@ -1,3 +1,8 @@
+var wfjs = (function () {
+var wfjs;
+return wfjs;
+})();
+
 var SVGNS = "http://www.w3.org/2000/svg";
 
 var Svg = (function () {
@@ -5,7 +10,7 @@ var Svg = (function () {
         this.targetId = targetId;
 		this.target = document.getElementById(targetId);
 
-		var svg = document.createElementNS(this.SVGNS, "svg");
+		var svg = document.createElementNS(SVGNS, "svg");
 		svg.setAttribute("id", "wfjs_svg");
 		svg.setAttribute("xmlns", this.SVGNS);
 		svg.setAttribute("version", "1.1");
@@ -18,12 +23,13 @@ var Svg = (function () {
 })();
 
 var Circle = (function () {
-    function Circle(svg, x, y, label, circle_options) {
+    function Circle(svg, x, y, label, circle_options, text_options) {
         this.svg = svg;
         this.x = x;
         this.y = y;
         this.label = label;
         this.circle_options = circle_options;
+        this.text_options = text_options;
     }
 
     Circle.prototype.show = function () {
@@ -41,16 +47,42 @@ var Circle = (function () {
 		circle.setAttribute("cx", this.x);
 		circle.setAttribute("cy", this.y);
 //		circle.addEventListener("mousedown", this._onMouseDown, false);
-		this.svg.appendChild(circle);
+		this.svg.svg.appendChild(circle);
         
+		var text = document.createElementNS(SVGNS, "text");
+
+		text.setAttribute("id", textId);
+		text.textContent = this.label;
+
+//		for(var attr in this.text_default_options){
+//			text.setAttribute(attr, this.text_default_options[attr]);
+//		}
+
+		if(this.text_options !=null && this.text_options !== undefined){
+			for(var attr in this.text_options){
+				text.setAttribute(attr, this.text_options[attr]);
+			}
+		}
+
+		this.svg.svg.appendChild(text);
+		var rect = text.getBBox();
+		text.setAttribute("x", this.x - (rect.width/2));
+		text.setAttribute("y", this.y);
+
+//		this.circles.push({
+//			id : circleId,
+//			children : [text]
+//		});
     };
     return Circle;
 })();
 
-// var i = new Item(200);
-// i.showPrice();
 
-var wfjs = {
+
+
+
+
+var wfjs1 = {
 	_wfjs : null,
 	SVGNS : "http://www.w3.org/2000/svg",
 	target: null,
