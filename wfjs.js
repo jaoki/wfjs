@@ -8,8 +8,6 @@ var wfjs = {
 	init : function(targetId){
 		this.target = document.getElementById(targetId);
 		var svg = document.createElementNS(this.SVGNS, "svg");
-		svg.setAttribute("width", "300px");
-		svg.setAttribute("height", "100px");
 		svg.setAttribute("id", "svg_wfjs");
 		svg.setAttribute("xmlns", this.SVGNS);
 		svg.setAttribute("version", "1.1");
