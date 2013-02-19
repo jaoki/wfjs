@@ -24,9 +24,9 @@ var wfjs = {
 		}
 		circle.setAttribute("cx", x);
 		circle.setAttribute("cy", y);
-		circle.addEventListener("click", this._changeColor, false);
+		circle.addEventListener("mousedown", this._onMouseDown, false);
+		document.addEventListener("mouseup", this._onMouseUp, false);
 		this.svg.appendChild(circle);
-		
 
 		var text = document.createElementNS(this.SVGNS, "text");
 		text.textContent = label;
@@ -39,9 +39,23 @@ var wfjs = {
 		text.setAttribute("y", y);
 
 	},
-	_changeColor : function(e){
+	draggingTarget : null,
+
+	_onMouseDown : function(e){
 		var target = e.target;
 		target.setAttribute("fill", "purple");
+		draggingTarget = e.target;
+	},
 
-	}
+	_onMouseUp : function(e){
+		if(draggingTarget != null){
+			draggingTarget.setAttribute("cx", e.pageX);
+			draggingTarget.setAttribute("cy", e.pageY);
+			draggingTarget = null;
+		}
+//		var target = e.target;
+//		e.target.cx = e.pageX;
+//		target.setAttribute("fill", "purple");
+	},
+
 }
