@@ -1,21 +1,21 @@
 var wfjs = (function () {
 var wfjs1 = {};
 
-wfjs1.SVGNS = "http://www.w3.org/2000/svg";
+var SVGNS = "http://www.w3.org/2000/svg";
 
-wfjs1.text_default_options = {
+var TEXT_DEFAULT_OPTIONS = {
 	fill : "black",
 	"font-size" : "1em",
 };
+
 
 wfjs1.Svg = (function () {
     function Svg(targetId) {
         this.targetId = targetId;
 		this.target = document.getElementById(targetId);
 
-		var svg = document.createElementNS(wfjs1.SVGNS, "svg");
+		var svg = document.createElementNS(SVGNS, "svg");
 		svg.setAttribute("id", "wfjs_svg");
-//		svg.setAttribute("xmlns", this.SVGNS);
 		svg.setAttribute("version", "1.1");
 		this.target.appendChild(svg);
 		this.svg = svg;
@@ -41,7 +41,7 @@ wfjs1.Circle = (function () {
 //		var textId = "wfjs_circle_" + this.circles.length + "_text";
 		var textId = "wfjs_circle__text";
 
-		var circle = document.createElementNS(wfjs1.SVGNS, "circle");
+		var circle = document.createElementNS(SVGNS, "circle");
 		circle.setAttribute("id", circleId);
 
 		for(var attr in this.circle_options){
@@ -52,13 +52,13 @@ wfjs1.Circle = (function () {
 //		circle.addEventListener("mousedown", this._onMouseDown, false);
 		this.svg.svg.appendChild(circle);
         
-		var text = document.createElementNS(wfjs1.SVGNS, "text");
+		var text = document.createElementNS(SVGNS, "text");
 
 		text.setAttribute("id", textId);
 		text.textContent = this.label;
 
-		for(var attr in wfjs1.text_default_options){
-			text.setAttribute(attr, wfjs1.text_default_options[attr]);
+		for(var attr in TEXT_DEFAULT_OPTIONS){
+			text.setAttribute(attr, TEXT_DEFAULT_OPTIONS[attr]);
 		}
 
 		if(this.text_options !=null && this.text_options !== undefined){
