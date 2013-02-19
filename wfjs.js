@@ -27,7 +27,7 @@ wfjs1.Svg = (function () {
 				var targetId = draggingTarget.getAttribute("id");
 // TODO				var children = _this.children.getById(targetId).move();
 				var child = _this.children.getById(targetId);
-				child.obj.move(e.pageX, e.pageY);
+				child.obj.move(e.offsetX, e.offsetY);
 //				for(var i = 0; i < children.length; i++){
 //					var text  = children[i];
 //					var rect = text.getBBox();
