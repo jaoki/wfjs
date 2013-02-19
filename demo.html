@@ -9,8 +9,15 @@
 
 $(function() {
 	wfjs.init("div_target");
-	wfjs.drawCicle();
-}); // End of JQuery Initialization
+	wfjs.drawCicle({
+		cx: "100",
+		cy: "50",
+		r: "40",
+		stroke: "black",
+		stroke_width: "2",
+		fill: "yellow",
+	});
+});
 
 	</script>
 </head>
