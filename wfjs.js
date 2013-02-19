@@ -3,6 +3,7 @@ var wfjs = {
 	SVGNS : "http://www.w3.org/2000/svg",
 	target: null,
 	svg: null,
+
 	text_default_options : {
 		fill : "black"
 	},
@@ -37,7 +38,7 @@ var wfjs = {
 		circle.setAttribute("id", circleId);
 
 		for(var attr in circle_options){
-			circle.setAttribute(attr.replace("_", "-"), circle_options[attr]);
+			circle.setAttribute(attr, circle_options[attr]);
 		}
 		circle.setAttribute("cx", x);
 		circle.setAttribute("cy", y);
@@ -46,10 +47,16 @@ var wfjs = {
 		this.svg.appendChild(circle);
 
 		var text = document.createElementNS(this.SVGNS, "text");
+
 		text.setAttribute("id", textId);
 		text.textContent = label;
-		text.setAttribute("fill","red");
-		text.setAttribute("font-size","20");
+
+		for(var attr in this.text_default_options){
+			text.setAttribute(attr, this.text_default_options[attr]);
+		}
+
+//		text.setAttribute("fill","red");
+//		text.setAttribute("font-size","20");
 
 		this.svg.appendChild(text);
 		var rect = text.getBBox();
@@ -66,7 +73,6 @@ var wfjs = {
 
 	_onMouseDown : function(e){
 		var target = e.target;
-		target.setAttribute("fill", "purple");
 		draggingTarget = e.target;
 	},
 
