@@ -170,13 +170,15 @@ wfjs1.FlowLine = (function () {
 		this.lineElement.setAttribute("x1", startX);
 		this.lineElement.setAttribute("y1", startY);
 
-		var radian = Math.atan2(this.startNode.y - this.endNode.y, this.startNode.x - this.endNode.x);
-		var endX = this.endNode.circle_options.r * Math.cos(radian) + this.endNode.x;
-		var endY = this.endNode.circle_options.r * Math.sin(radian) + this.endNode.y;
+		var endRadian = Math.atan2(this.startNode.y - this.endNode.y, this.startNode.x - this.endNode.x);
+		var endX = this.endNode.circle_options.r * Math.cos(endRadian) + this.endNode.x;
+		var endY = this.endNode.circle_options.r * Math.sin(endRadian) + this.endNode.y;
 		this.lineElement.setAttribute("x2", endX);
 		this.lineElement.setAttribute("y2", endY);
 
+		var endDigree = (endRadian * 180 / Math.PI) - 90;
 		this.arrowPathElement.setAttribute("d", "M" + endX + " " + endY + " " + HEAD_SHAPE_PATH);
+		this.arrowPathElement.setAttribute("transform", "rotate(" + endDigree + " " + endX + " " + endY + ")");
 
     }; // End of move()
 
