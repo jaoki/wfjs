@@ -105,10 +105,13 @@ wfjs1.Node = (function () {
     }; // End of show()
 
     Node.prototype.linkTo = function(node) {
-		var line = document.createElementNS(SVGNS, "line");
-		line.setAttribute("x1", "");
-		line.setAttribute("y1", "");
-		line.setAttribute("x2", "");
+		var lineElement = document.createElementNS(SVGNS, "line");
+		lineElement.setAttribute("x1", this.x);
+		lineElement.setAttribute("y1", this.y);
+		lineElement.setAttribute("x2", node.x);
+		lineElement.setAttribute("y2", node.y);
+		lineElement.setAttribute("style", "stroke: black;stroke-width:2;");
+		this.canvas.svgElement.appendChild(lineElement);
 
     }; // End of linkTo()
 
