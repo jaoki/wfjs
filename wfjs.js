@@ -15,35 +15,26 @@ var CIRCLE_DEFAULT_OPTIONS = {
 	fill: "yellow",
 };
 
-var draggingTarget = null;
-
-var _onMouseDown = function(e){
-	draggingTarget = e.target;
-	e.preventDefault();
-};
-
 
 wfjs1.Canvas = (function () {
+	var draggingNode = null;
+
     function Canvas(containerId) {
 
 		var _this = this;
 		var _onMouseUp = function(e){
-			if(draggingTarget != null){
-//				var targetId = draggingTarget.getAttribute("id");
-//				var node = _this.nodes.getById(targetId);
-//				node.move(e.offsetX, e.offsetY);
-				draggingTarget = null;
+			if(draggingNode != null){
+				draggingNode = null;
 			}
 		};
 
 		var _onMouseMove = function(e){
-			if(draggingTarget != null){
-				var targetId = draggingTarget.getAttribute("id");
+			if(draggingNode != null){
+				var targetId = draggingNode.getAttribute("id");
 				var node = _this.nodes.getById(targetId);
-//				node.move(e.offsetX, e.offsetY);
 				node.move(e.x, e.y);
-				console.debug(e.target);
-				console.debug("offsetX: " + e.offsetX + " e.x" + e.x);
+//				console.debug(e.target);
+//				console.debug("offsetX: " + e.offsetX + " e.x" + e.x);
 			}
 		};
 
@@ -69,6 +60,12 @@ wfjs1.Canvas = (function () {
 			return null;
 		}
     }
+
+	Canvas.prototype._onMouseDown = function(e){
+		draggingNode = e.target;
+		e.preventDefault();
+	};
+
 
     return Canvas;
 })();
@@ -106,7 +103,7 @@ wfjs1.Node = (function () {
 			this.circleElement.setAttribute(attr, this.circle_options[attr]);
 		}
 
-		this.circleElement.addEventListener("mousedown", _onMouseDown, false);
+		this.circleElement.addEventListener("mousedown", this.canvas._onMouseDown, false);
 		this.canvas.svgElement.appendChild(this.circleElement);
         
 		var textElement = document.createElementNS(SVGNS, "text");
@@ -140,7 +137,6 @@ wfjs1.Node = (function () {
 
     Node.prototype.move = function(x, y) {
 		this.x = x;
-		console.debug(x);
 		this.y = y;
 		this.circleElement.setAttribute("cx", x);
 		this.circleElement.setAttribute("cy", y);
