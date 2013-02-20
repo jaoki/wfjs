@@ -60,8 +60,8 @@ wfjs1.Canvas = (function () {
     return Canvas;
 })();
 
-wfjs1.Circle = (function () {
-    function Circle(canvas, x, y, label, circle_options, text_options) {
+wfjs1.Node = (function () {
+    function Node(canvas, x, y, label, circle_options, text_options) {
         this.canvas = canvas;
         this.x = x;
         this.y = y;
@@ -71,7 +71,7 @@ wfjs1.Circle = (function () {
 		this.children = [];
     };
 
-    Circle.prototype.show = function () {
+    Node.prototype.show = function () {
 //		var circleId = "wfjs_circle_" + this.circles.length;
 		var circleId = "wfjs_circle_";
 //		var textId = "wfjs_circle_" + this.circles.length + "_text";
@@ -116,7 +116,7 @@ wfjs1.Circle = (function () {
 		});
     }; // End of show()
 
-    Circle.prototype.move = function(x, y) {
+    Node.prototype.move = function(x, y) {
 		this.circle.setAttribute("cx", x);
 		this.circle.setAttribute("cy", y);
 //		var children = this.children.getById(targetId).move();
@@ -129,7 +129,7 @@ wfjs1.Circle = (function () {
 
     }; // End of move()
 
-    return Circle;
+    return Node;
 })();
 
 return wfjs1;
