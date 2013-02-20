@@ -87,6 +87,7 @@ wfjs1.Node = (function () {
 
 		this.circleElement = document.createElementNS(SVGNS, "circle");
 		this.circleElement.setAttribute("id", this.id);
+		this.circleElement.setAttribute("style", "cursor: move;");
 
 		for(var attr in this.circle_options){
 			this.circleElement.setAttribute(attr, this.circle_options[attr]);
