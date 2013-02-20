@@ -24,10 +24,13 @@ var node2 = new wfjs.Node(canvas1, 40, 120, "second", {
 });
 
 var node3 = new wfjs.Node(canvas1, 300, 120, "THIRD");
+var node4 = new wfjs.Node(canvas1, 200, 200, "4th");
 
 node1.show();
 node2.show();
 node3.show();
+node4.show();
+
 node1.linkTo(node2);
 node1.linkTo(node3);
 
