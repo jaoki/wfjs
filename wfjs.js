@@ -138,7 +138,7 @@ wfjs1.Node = (function () {
 		this.circleElement.setAttribute("cy", y);
 		var rect = this.labelTextElement.getBBox();
 		this.labelTextElement.setAttribute("x", x - (rect.width/2));
-		this.labelTextElement.setAttribute("y", y);
+		this.labelTextElement.setAttribute("y", y + 5); // TODO what is this magic number?
 		for(var i = 0; i < this.lineFroms.length; i++){
 			var lineElement = this.lineFroms[i];
 			lineElement.setAttribute("x1", x);
