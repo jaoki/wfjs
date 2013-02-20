@@ -19,9 +19,10 @@ var CIRCLE_DEFAULT_OPTIONS = {
 wfjs1.Canvas = (function () {
 	var draggingNode = null;
 
+	var _canvasInstance;
     function Canvas(containerId) {
+		_canvasInstance = this;
 
-		var _this = this;
 		var _onMouseUp = function(e){
 			if(draggingNode != null){
 				draggingNode = null;
@@ -30,9 +31,7 @@ wfjs1.Canvas = (function () {
 
 		var _onMouseMove = function(e){
 			if(draggingNode != null){
-				var targetId = draggingNode.getAttribute("id");
-				var node = _this.nodes.getById(targetId);
-				node.move(e.x, e.y);
+				draggingNode.move(e.x, e.y);
 //				console.debug(e.target);
 //				console.debug("offsetX: " + e.offsetX + " e.x" + e.x);
 			}
@@ -62,7 +61,8 @@ wfjs1.Canvas = (function () {
     }
 
 	Canvas.prototype._onMouseDown = function(e){
-		draggingNode = e.target;
+		var targetId = e.target.getAttribute("id");
+		draggingNode = _canvasInstance.nodes.getById(targetId);
 		e.preventDefault();
 	};
 
