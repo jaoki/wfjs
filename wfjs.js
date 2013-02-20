@@ -163,7 +163,34 @@ wfjs1.Node = (function () {
 	};
 
     return Node;
-})();
+})(); // End of wfjs1.Node 
+
+wfjs1.FlowLine = (function () {
+    function FlowLine(canvas, startNode, endNode){
+		this.canvas = canvas;
+		this.startNode = startNode;
+		this.endNode = endNode;
+		this.lineElement = document.createElementNS(SVGNS, "line");
+		this.lineElement.setAttribute("style", "stroke: black;stroke-width:1;");
+		this.canvas.svgElement.appendChild(this.lineElement);
+
+		// The line end should not be the center of the target object, since it needs an arrow mark.
+		var startRadian = Math.atan2(endNode.y - startNode.y, endNode.x - startNode.x);
+		var startX = startNode.circle_options.r * Math.cos(startRadian) + startNode.x;
+		var startY = startNode.circle_options.r * Math.sin(startRadian) + startNode.y;
+		this.lineElement.setAttribute("x1", startX);
+		this.lineElement.setAttribute("y1", startY);
+
+		var radian = Math.atan2(startNode.y - endNode.y, startNode.x - endNode.x);
+		var endX = endNode.circle_options.r * Math.cos(radian) + endNode.x;
+		var endY = endNode.circle_options.r * Math.sin(radian) + endNode.y;
+		this.lineElement.setAttribute("x2", endX);
+		this.lineElement.setAttribute("y2", endY);
+
+	};
+
+    return FlowLine;
+})(); // End of wfjs1.FlowLine 
 
 return wfjs1;
 })();
