@@ -122,19 +122,7 @@ wfjs1.Node = (function () {
 
     Node.prototype.linkTo = function(node) {
 		var lineElement = document.createElementNS(SVGNS, "line");
-
-		// The line end should not be the center of the target object, since it needs an arrow mark.
-		var startRadian = Math.atan2(node.y - this.y, node.x - this.x);
-		var startX = this.circle_options.r * Math.cos(startRadian) + this.x;
-		var startY = this.circle_options.r * Math.sin(startRadian) + this.y;
-		lineElement.setAttribute("x1", startX);
-		lineElement.setAttribute("y1", startY);
-
-		var radian = Math.atan2(this.y - node.y, this.x - node.x);
-		var endX = node.circle_options.r * Math.cos(radian) + node.x;
-		var endY = node.circle_options.r * Math.sin(radian) + node.y;
-		lineElement.setAttribute("x2", endX);
-		lineElement.setAttribute("y2", endY);
+		drawLine(lineElement, this, node);
 
 		lineElement.setAttribute("style", "stroke: black;stroke-width:1;");
 		this.canvas.svgElement.appendChild(lineElement);
@@ -164,6 +152,21 @@ wfjs1.Node = (function () {
 		}
 
     }; // End of move()
+
+	var drawLine = function(lineElement, startNode, endNode){
+		// The line end should not be the center of the target object, since it needs an arrow mark.
+		var startRadian = Math.atan2(endNode.y - startNode.y, endNode.x - startNode.x);
+		var startX = startNode.circle_options.r * Math.cos(startRadian) + startNode.x;
+		var startY = startNode.circle_options.r * Math.sin(startRadian) + startNode.y;
+		lineElement.setAttribute("x1", startX);
+		lineElement.setAttribute("y1", startY);
+
+		var radian = Math.atan2(startNode.y - endNode.y, startNode.x - endNode.x);
+		var endX = endNode.circle_options.r * Math.cos(radian) + endNode.x;
+		var endY = endNode.circle_options.r * Math.sin(radian) + endNode.y;
+		lineElement.setAttribute("x2", endX);
+		lineElement.setAttribute("y2", endY);
+	};
 
     return Node;
 })();
