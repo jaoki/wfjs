@@ -13,6 +13,7 @@ var CIRCLE_DEFAULT_OPTIONS = {
 	stroke: "blue",
 	"stroke-width": "2",
 	fill: "yellow",
+	filter: "url(#dropshadow1)"
 };
 
 var DIAMOND_DEFAULT_OPTIONS = {
@@ -21,6 +22,7 @@ var DIAMOND_DEFAULT_OPTIONS = {
 	fill: "DarkSeaGreen",
 	width : 60,
 	height : 60,
+	filter: "url(#dropshadow1)"
 };
 
 
@@ -56,6 +58,35 @@ wfjs1.Canvas = (function () {
 
 		this.container.appendChild(svgElement);
 		this.svgElement = svgElement;
+
+		var defsElement = document.createElementNS(SVGNS, "defs");
+		svgElement.appendChild(defsElement);
+
+		var filterElement = document.createElementNS(SVGNS, "filter");
+		filterElement.setAttribute("id", "dropshadow1");
+		defsElement.appendChild(filterElement);
+
+		var feGaussianBlurElement = document.createElementNS(SVGNS, "feGaussianBlur");
+		feGaussianBlurElement.setAttribute("in", "SourceAlpha");
+		feGaussianBlurElement.setAttribute("stdDeviation", "3");
+		filterElement.appendChild(feGaussianBlurElement);
+
+		var feOffsetElement = document.createElementNS(SVGNS, "feOffset");
+		feOffsetElement.setAttribute("dx", "2");
+		feOffsetElement.setAttribute("dy", "2");
+		feOffsetElement.setAttribute("result", "offsetblur");
+		filterElement.appendChild(feOffsetElement);
+
+		var feMergeElement = document.createElementNS(SVGNS, "feMerge");
+		filterElement.appendChild(feMergeElement);
+
+		var feMergeNodeElement1 = document.createElementNS(SVGNS, "feMergeNode");
+		feMergeElement.appendChild(feMergeNodeElement1);
+
+		var feMergeNodeElement2 = document.createElementNS(SVGNS, "feMergeNode");
+		feMergeNodeElement2.setAttribute("in", "SourceGraphic");
+		feMergeElement.appendChild(feMergeNodeElement2);
+
 
 		this.nodes = [];
 		this.nodes.getById = function(id){
@@ -106,6 +137,7 @@ wfjs1.CircleNode = (function () {
 		this.circleElement = document.createElementNS(SVGNS, "circle");
 		this.circleElement.setAttribute("id", this.id);
 		this.circleElement.setAttribute("style", "cursor: move;");
+//		this.circleElement.setAttribute("filter", "url(#dropshadow1)");
 
 		for(var attr in this.circle_options){
 			this.circleElement.setAttribute(attr, this.circle_options[attr]);
