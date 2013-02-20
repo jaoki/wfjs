@@ -56,8 +56,11 @@ wfjs1.Canvas = (function () {
 })();
 
 wfjs1.Node = (function () {
+	var index = 0; 
+
     function Node(canvas, x, y, label, circle_options, text_options) {
-		this.id = "wfjs_node_" + canvas.nodes.length;
+		this.id = "wfjs_node_" + index;
+		index++;
         this.canvas = canvas;
         this.x = x;
         this.y = y;
