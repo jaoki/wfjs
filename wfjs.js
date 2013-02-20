@@ -139,17 +139,10 @@ wfjs1.Node = (function () {
 		this.labelTextElement.setAttribute("x", x - (rect.width/2));
 		this.labelTextElement.setAttribute("y", y + 5); // TODO what is this magic number?
 		for(var i = 0; i < this.lineFroms.length; i++){
-//			var lineElement = this.lineFroms[i];
-//			lineElement.setAttribute("x1", x);
-//			lineElement.setAttribute("y1", y);
 			drawLine(this.lineFroms[i].lineElement, this.lineFroms[i].from, this);
 		}
 		for(var i = 0; i < this.lineTos.length; i++){
-//			var lineElement = this.lineTos[i].lineElement;
-//			this.lineTos[i].to;
 			drawLine(this.lineTos[i].lineElement, this, this.lineTos[i].to);
-//			lineElement.setAttribute("x2", x);
-//			lineElement.setAttribute("y2", y);
 		}
 
     }; // End of move()
