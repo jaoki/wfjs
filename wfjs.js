@@ -64,7 +64,6 @@ wfjs1.Node = (function () {
         this.label = label;
         this.circle_options = circle_options;
         this.text_options = text_options;
-		this.children = [];
     };
 
     Node.prototype.show = function () {
@@ -82,27 +81,27 @@ wfjs1.Node = (function () {
 		this.circleElement.addEventListener("mousedown", _onMouseDown, false);
 		this.canvas.svgElement.appendChild(this.circleElement);
         
-		var text = document.createElementNS(SVGNS, "text");
+		var textElement = document.createElementNS(SVGNS, "text");
 
-		text.setAttribute("id", textId);
-		text.textContent = this.label;
+		textElement.setAttribute("id", textId);
+		textElement.textContent = this.label;
 
 		for(var attr in TEXT_DEFAULT_OPTIONS){
-			text.setAttribute(attr, TEXT_DEFAULT_OPTIONS[attr]);
+			textElement.setAttribute(attr, TEXT_DEFAULT_OPTIONS[attr]);
 		}
 
 		if(this.text_options !=null && this.text_options !== undefined){
 			for(var attr in this.text_options){
-				text.setAttribute(attr, this.text_options[attr]);
+				textElement.setAttribute(attr, this.text_options[attr]);
 			}
 		}
 
-		this.canvas.svgElement.appendChild(text);
-		var rect = text.getBBox();
-		text.setAttribute("x", this.x - (rect.width/2));
-		text.setAttribute("y", this.y);
+		this.canvas.svgElement.appendChild(textElement);
+		var rect = textElement.getBBox();
+		textElement.setAttribute("x", this.x - (rect.width/2));
+		textElement.setAttribute("y", this.y);
 
-		this.children.push(text);
+		this.labelTextElement = textElement;
 
 		this.canvas.nodes.push(this);
 
@@ -111,13 +110,9 @@ wfjs1.Node = (function () {
     Node.prototype.move = function(x, y) {
 		this.circleElement.setAttribute("cx", x);
 		this.circleElement.setAttribute("cy", y);
-//		var children = this.children.getById(targetId).move();
-		for(var i = 0; i < this.children.length; i++){
-			var text  = this.children[i];
-			var rect = text.getBBox();
-			text.setAttribute("x", x - (rect.width/2));
-			text.setAttribute("y", y);
-		}
+		var rect = this.labelTextElement.getBBox();
+		this.labelTextElement.setAttribute("x", x - (rect.width/2));
+		this.labelTextElement.setAttribute("y", y);
 
     }; // End of move()
 
