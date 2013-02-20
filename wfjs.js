@@ -80,8 +80,7 @@ wfjs1.Node = (function () {
 		}
 
         this.text_options = text_options;
-		this.lineTos = [];
-		this.lineFroms = [];
+		this.flowlines = [];
     };
 
     Node.prototype.show = function () {
@@ -120,19 +119,8 @@ wfjs1.Node = (function () {
 
     Node.prototype.connectTo = function(node) {
 		var flowLine = new wfjs1.FlowLine(this.canvas, this, node);
-
-//		var lineElement = document.createElementNS(SVGNS, "line");
-//		drawLine(lineElement, this, node);
-//
-//		lineElement.setAttribute("style", "stroke: black;stroke-width:1;");
-//		this.canvas.svgElement.appendChild(lineElement);
-////		this.canvas.svgElement.insertBefore(lineElement, this.canvas.svgElement.firstChild);
-
-//		this.lineFroms.push({lineElement : lineElement, from : node});
-//		node.lineTos.push({lineElement : lineElement, to : this});
-
-		this.lineFroms.push(flowLine);
-		node.lineTos.push(flowLine);
+		this.flowlines.push(flowLine);
+		node.flowlines.push(flowLine);
 
     }; // End of connectTo()
 
@@ -144,34 +132,18 @@ wfjs1.Node = (function () {
 		var rect = this.labelTextElement.getBBox();
 		this.labelTextElement.setAttribute("x", x - (rect.width/2));
 		this.labelTextElement.setAttribute("y", y + 5); // TODO what is this magic number?
-		for(var i = 0; i < this.lineFroms.length; i++){
-			this.lineFroms[i].relocate();
-		}
-		for(var i = 0; i < this.lineTos.length; i++){
-			this.lineTos[i].relocate();
+		for(var i = 0; i < this.flowlines.length; i++){
+			this.flowlines[i].relocate();
 		}
 
     }; // End of move()
-
-//	var drawLine = function(lineElement, startNode, endNode){
-//		// The line end should not be the center of the target object, since it needs an arrow mark.
-//		var startRadian = Math.atan2(endNode.y - startNode.y, endNode.x - startNode.x);
-//		var startX = startNode.circle_options.r * Math.cos(startRadian) + startNode.x;
-//		var startY = startNode.circle_options.r * Math.sin(startRadian) + startNode.y;
-//		lineElement.setAttribute("x1", startX);
-//		lineElement.setAttribute("y1", startY);
-//
-//		var radian = Math.atan2(startNode.y - endNode.y, startNode.x - endNode.x);
-//		var endX = endNode.circle_options.r * Math.cos(radian) + endNode.x;
-//		var endY = endNode.circle_options.r * Math.sin(radian) + endNode.y;
-//		lineElement.setAttribute("x2", endX);
-//		lineElement.setAttribute("y2", endY);
-//	};
 
     return Node;
 })(); // End of wfjs1.Node 
 
 wfjs1.FlowLine = (function () {
+	var HEAD_SHAPE_PATH = "l-5 10 l10 0 Z";
+
     function FlowLine(canvas, startNode, endNode){
 		this.canvas = canvas;
 		this.startNode = startNode;
@@ -180,6 +152,12 @@ wfjs1.FlowLine = (function () {
 		this.lineElement = document.createElementNS(SVGNS, "line");
 		this.lineElement.setAttribute("style", "stroke: black;stroke-width:1;");
 		this.canvas.svgElement.appendChild(this.lineElement);
+
+		this.arrowPathElement = document.createElementNS(SVGNS, "path");
+		this.arrowPathElement.setAttribute("fill", "black");
+		this.arrowPathElement.setAttribute("stroke", "black");
+		this.canvas.svgElement.appendChild(this.arrowPathElement);
+
 		this.relocate();
 
 	};
@@ -197,6 +175,8 @@ wfjs1.FlowLine = (function () {
 		var endY = this.endNode.circle_options.r * Math.sin(radian) + this.endNode.y;
 		this.lineElement.setAttribute("x2", endX);
 		this.lineElement.setAttribute("y2", endY);
+
+		this.arrowPathElement.setAttribute("d", "M" + endX + " " + endY + " " + HEAD_SHAPE_PATH);
 
     }; // End of move()
 
