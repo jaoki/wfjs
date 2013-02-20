@@ -72,6 +72,8 @@ wfjs1.Node = (function () {
         this.label = label;
         this.circle_options = circle_options;
         this.text_options = text_options;
+		this.lineTos = [];
+		this.lineFroms = [];
     };
 
     Node.prototype.show = function () {
@@ -124,6 +126,8 @@ wfjs1.Node = (function () {
 		lineElement.setAttribute("style", "stroke: black;stroke-width:1;");
 //		this.canvas.svgElement.appendChild(lineElement);
 		this.canvas.svgElement.insertBefore(lineElement, this.canvas.svgElement.firstChild);
+		this.lineFroms.push(lineElement);
+		node.lineTos.push(lineElement);
 
     }; // End of linkTo()
 
@@ -135,6 +139,16 @@ wfjs1.Node = (function () {
 		var rect = this.labelTextElement.getBBox();
 		this.labelTextElement.setAttribute("x", x - (rect.width/2));
 		this.labelTextElement.setAttribute("y", y);
+		for(var i = 0; i < this.lineFroms.length; i++){
+			var lineElement = this.lineFroms[i];
+			lineElement.setAttribute("x1", x);
+			lineElement.setAttribute("y1", y);
+		}
+		for(var i = 0; i < this.lineTos.length; i++){
+			var lineElement = this.lineTos[i];
+			lineElement.setAttribute("x2", x);
+			lineElement.setAttribute("y2", y);
+		}
 
     }; // End of move()
 
