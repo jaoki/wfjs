@@ -118,7 +118,7 @@ wfjs1.Node = (function () {
 
     }; // End of show()
 
-    Node.prototype.linkTo = function(node) {
+    Node.prototype.connectTo = function(node) {
 		var lineElement = document.createElementNS(SVGNS, "line");
 		drawLine(lineElement, this, node);
 
@@ -128,7 +128,7 @@ wfjs1.Node = (function () {
 		this.lineFroms.push({lineElement : lineElement, from : node});
 		node.lineTos.push({lineElement : lineElement, to : this});
 
-    }; // End of linkTo()
+    }; // End of connectTo()
 
     Node.prototype.move = function(x, y) {
 		this.x = x;
