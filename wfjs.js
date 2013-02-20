@@ -26,8 +26,8 @@ wfjs1.Canvas = (function () {
 //				draggingTarget.setAttribute("cy", e.pageY);
 				var targetId = draggingTarget.getAttribute("id");
 // TODO				var children = _this.children.getById(targetId).move();
-				var child = _this.nodes.getById(targetId);
-				child.obj.move(e.offsetX, e.offsetY);
+				var node = _this.nodes.getById(targetId);
+				node.move(e.offsetX, e.offsetY);
 //				for(var i = 0; i < children.length; i++){
 //					var text  = children[i];
 //					var rect = text.getBBox();
@@ -63,6 +63,7 @@ wfjs1.Canvas = (function () {
 
 wfjs1.Node = (function () {
     function Node(canvas, x, y, label, circle_options, text_options) {
+		this.id = "wfjs_node_" + canvas.nodes.length;
         this.canvas = canvas;
         this.x = x;
         this.y = y;
@@ -73,13 +74,12 @@ wfjs1.Node = (function () {
     };
 
     Node.prototype.show = function () {
-//		var circleId = "wfjs_circle_" + this.circles.length;
-		var circleId = "wfjs_circle_";
+		//var circleId = "wfjs_circle_";
 //		var textId = "wfjs_circle_" + this.circles.length + "_text";
 		var textId = "wfjs_circle__text";
 
 		this.circle = document.createElementNS(SVGNS, "circle");
-		this.circle.setAttribute("id", circleId);
+		this.circle.setAttribute("id", this.id);
 
 		for(var attr in this.circle_options){
 			this.circle.setAttribute(attr, this.circle_options[attr]);
@@ -111,10 +111,11 @@ wfjs1.Node = (function () {
 
 		this.children.push(text);
 
-		this.canvas.nodes.push({
-			id : circleId,
-			obj : this,
-		});
+		this.canvas.nodes.push(this);
+//		this.canvas.nodes.push({
+//			id : this.id,
+//			obj : this,
+//		});
     }; // End of show()
 
     Node.prototype.move = function(x, y) {
