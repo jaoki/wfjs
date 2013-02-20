@@ -17,7 +17,7 @@ var _onMouseDown = function(e){
 
 
 wfjs1.Canvas = (function () {
-    function Canvas(targetId) {
+    function Canvas(containerId) {
 
 		var _this = this;
 		var _onMouseUp = function(e){
@@ -26,7 +26,7 @@ wfjs1.Canvas = (function () {
 //				draggingTarget.setAttribute("cy", e.pageY);
 				var targetId = draggingTarget.getAttribute("id");
 // TODO				var children = _this.children.getById(targetId).move();
-				var child = _this.children.getById(targetId);
+				var child = _this.nodes.getById(targetId);
 				child.obj.move(e.offsetX, e.offsetY);
 //				for(var i = 0; i < children.length; i++){
 //					var text  = children[i];
@@ -38,17 +38,18 @@ wfjs1.Canvas = (function () {
 			}
 		};
 
-        this.targetId = targetId;
-		this.target = document.getElementById(targetId);
+        this.containerId = containerId;
+		this.container = document.getElementById(containerId);
 
-		var svg = document.createElementNS(SVGNS, "svg");
-		svg.setAttribute("id", "wfjs_svg");
-		svg.setAttribute("version", "1.1");
-		this.target.appendChild(svg);
-		this.svg = svg;
-		svg.addEventListener("mouseup", _onMouseUp, false);
-		this.children = [];
-		this.children.getById = function(id){
+		var svgElement = document.createElementNS(SVGNS, "svg");
+		svgElement.setAttribute("id", "wfjs_svg");
+		svgElement.setAttribute("version", "1.1");
+		svgElement.addEventListener("mouseup", _onMouseUp, false);
+		this.container.appendChild(svgElement);
+		this.svgElement = svgElement;
+
+		this.nodes = [];
+		this.nodes.getById = function(id){
 			for(var i = 0; i < this.length; i++){
 				if(this[i].id == id){
 					return this[i];
@@ -86,7 +87,7 @@ wfjs1.Node = (function () {
 		this.circle.setAttribute("cx", this.x);
 		this.circle.setAttribute("cy", this.y);
 		this.circle.addEventListener("mousedown", _onMouseDown, false);
-		this.canvas.svg.appendChild(this.circle);
+		this.canvas.svgElement.appendChild(this.circle);
         
 		var text = document.createElementNS(SVGNS, "text");
 
@@ -103,14 +104,14 @@ wfjs1.Node = (function () {
 			}
 		}
 
-		this.canvas.svg.appendChild(text);
+		this.canvas.svgElement.appendChild(text);
 		var rect = text.getBBox();
 		text.setAttribute("x", this.x - (rect.width/2));
 		text.setAttribute("y", this.y);
 
 		this.children.push(text);
 
-		this.canvas.children.push({
+		this.canvas.nodes.push({
 			id : circleId,
 			obj : this,
 		});
