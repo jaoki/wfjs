@@ -79,8 +79,6 @@ wfjs1.Node = (function () {
 			this.circle_options[attr] = circle_options[attr];
 		}
 
-//        this.circle_options = circle_options;
-
         this.text_options = text_options;
 		this.lineTos = [];
 		this.lineFroms = [];
