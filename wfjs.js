@@ -91,10 +91,6 @@ wfjs1.Node = (function () {
 		this.circleElement = document.createElementNS(SVGNS, "circle");
 		this.circleElement.setAttribute("id", this.id);
 
-//		for(var attr in CIRCLE_DEFAULT_OPTIONS){
-//			this.circleElement.setAttribute(attr, CIRCLE_DEFAULT_OPTIONS[attr]);
-//		}
-
 		for(var attr in this.circle_options){
 			this.circleElement.setAttribute(attr, this.circle_options[attr]);
 		}
@@ -130,20 +126,23 @@ wfjs1.Node = (function () {
 		lineElement.setAttribute("y1", this.y);
 
 		// The line end should not be the center of the target object, since it needs an arrow mark.
-		var endX;
-		if(this.x < node.x){
-			endX = node.x - node.circle_options.r;
-		}else{
-			endX = node.x + node.circle_options.r;
-		}
+		var radian = Math.atan2(node.y - this.y, node.x - this.x);
+
+
+		var endX = node.circle_options.r * Math.cos(radian) + node.x;
+//		if(this.x < node.x){
+//			endX = node.x - node.circle_options.r;
+//		}else{
+//			endX = node.x + node.circle_options.r;
+//		}
 		lineElement.setAttribute("x2", endX);
 
-		var endY;
-		if(this.y < node.y){
-			endY = node.y - node.circle_options.r;
-		}else{
-			endY = node.y + node.circle_options.r;
-		}
+		var endY = node.circle_options.r * Math.sin(radian) + node.y;
+//		if(this.y < node.y){
+//			endY = node.y - node.circle_options.r;
+//		}else{
+//			endY = node.y + node.circle_options.r;
+//		}
 		lineElement.setAttribute("y2", endY);
 
 		lineElement.setAttribute("style", "stroke: black;stroke-width:1;");
