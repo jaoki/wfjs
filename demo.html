@@ -8,23 +8,7 @@
 	<script type="text/javascript">
 
 $(function() {
-	wfjs10.init("div_target");
-
-	wfjs10.circle(80, 30, "aaa", {
-		r: "30",
-		stroke: "black",
-		"stroke-width": "2",
-		fill: "yellow",
-	});
-
-	wfjs10.circle(80, 120, "bbb", {
-		r: "30",
-		stroke: "black",
-		"stroke-width": "2",
-		fill: "red",
-	});
-
-var canvas1 = new wfjs.Canvas("div_target2");
+var canvas1 = new wfjs.Canvas("div_target");
 var c1 = new wfjs.Node(canvas1, 10, 30, "ccc", {
 		r: "30",
 		stroke: "black",
@@ -47,8 +31,7 @@ c2.show();
 	</script>
 </head>
 <body>
-	<div id="div_target" style="width:500px; height:200px;"></div>
-	<div id="div_target2" style="width:500px; height:500px; background-color: pink;"></div>
+	<div id="div_target" style="width:500px; height:500px; background-color: pink;"></div>
 
 
 
