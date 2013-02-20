@@ -9,22 +9,32 @@
 
 $(function() {
 var canvas1 = new wfjs.Canvas("div_target");
-var node1 = new wfjs.Node(canvas1, 30, 40, "First", {
+var node1 = new wfjs.Node(canvas1, 80, 40, "First", {
 		r: "30",
 		stroke: "black",
 		"stroke-width": "2",
 		fill: "yellow",
 });
 
-var node2 = new wfjs.Node(canvas1, 80, 120, "second", {
+var node2 = new wfjs.Node(canvas1, 40, 120, "second", {
 		r: "30",
 		stroke: "red",
 		"stroke-width": "2",
 		fill: "yellow",
 });
+
+var node3 = new wfjs.Node(canvas1, 150, 120, "THIRD", {
+//		r: "30",
+//		stroke: "red",
+//		"stroke-width": "2",
+//		fill: "yellow",
+});
+
 node1.show();
 node2.show();
+node3.show();
 node1.linkTo(node2);
+node1.linkTo(node3);
 
 
 });

@@ -8,6 +8,13 @@ var TEXT_DEFAULT_OPTIONS = {
 	"font-size" : "1em",
 };
 
+var CIRCLE_DEFAULT_OPTIONS = {
+	r: "30",
+	stroke: "blue",
+	"stroke-width": "2",
+	fill: "yellow",
+};
+
 var draggingTarget = null;
 
 var _onMouseDown = function(e){
@@ -74,6 +81,10 @@ wfjs1.Node = (function () {
 		this.circleElement = document.createElementNS(SVGNS, "circle");
 		this.circleElement.setAttribute("id", this.id);
 
+		for(var attr in CIRCLE_DEFAULT_OPTIONS){
+			this.circleElement.setAttribute(attr, CIRCLE_DEFAULT_OPTIONS[attr]);
+		}
+
 		for(var attr in this.circle_options){
 			this.circleElement.setAttribute(attr, this.circle_options[attr]);
 		}
@@ -110,8 +121,9 @@ wfjs1.Node = (function () {
 		lineElement.setAttribute("y1", this.y);
 		lineElement.setAttribute("x2", node.x);
 		lineElement.setAttribute("y2", node.y);
-		lineElement.setAttribute("style", "stroke: black;stroke-width:2;");
-		this.canvas.svgElement.appendChild(lineElement);
+		lineElement.setAttribute("style", "stroke: black;stroke-width:1;");
+//		this.canvas.svgElement.appendChild(lineElement);
+		this.canvas.svgElement.insertBefore(lineElement, this.canvas.svgElement.firstChild);
 
     }; // End of linkTo()
 
