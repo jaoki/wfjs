@@ -16,8 +16,8 @@ var _onMouseDown = function(e){
 };
 
 
-wfjs1.Svg = (function () {
-    function Svg(targetId) {
+wfjs1.Canvas = (function () {
+    function Canvas(targetId) {
 
 		var _this = this;
 		var _onMouseUp = function(e){
@@ -57,12 +57,12 @@ wfjs1.Svg = (function () {
 		}
     }
 
-    return Svg;
+    return Canvas;
 })();
 
 wfjs1.Circle = (function () {
-    function Circle(svg, x, y, label, circle_options, text_options) {
-        this.svg = svg;
+    function Circle(canvas, x, y, label, circle_options, text_options) {
+        this.canvas = canvas;
         this.x = x;
         this.y = y;
         this.label = label;
@@ -86,7 +86,7 @@ wfjs1.Circle = (function () {
 		this.circle.setAttribute("cx", this.x);
 		this.circle.setAttribute("cy", this.y);
 		this.circle.addEventListener("mousedown", _onMouseDown, false);
-		this.svg.svg.appendChild(this.circle);
+		this.canvas.svg.appendChild(this.circle);
         
 		var text = document.createElementNS(SVGNS, "text");
 
@@ -103,14 +103,14 @@ wfjs1.Circle = (function () {
 			}
 		}
 
-		this.svg.svg.appendChild(text);
+		this.canvas.svg.appendChild(text);
 		var rect = text.getBBox();
 		text.setAttribute("x", this.x - (rect.width/2));
 		text.setAttribute("y", this.y);
 
 		this.children.push(text);
 
-		this.svg.children.push({
+		this.canvas.children.push({
 			id : circleId,
 			obj : this,
 		});
