@@ -77,8 +77,7 @@ wfjs1.Node = (function () {
 		for(var attr in this.circle_options){
 			this.circleElement.setAttribute(attr, this.circle_options[attr]);
 		}
-		this.circleElement.setAttribute("cx", this.x);
-		this.circleElement.setAttribute("cy", this.y);
+
 		this.circleElement.addEventListener("mousedown", _onMouseDown, false);
 		this.canvas.svgElement.appendChild(this.circleElement);
         
@@ -98,17 +97,24 @@ wfjs1.Node = (function () {
 		}
 
 		this.canvas.svgElement.appendChild(textElement);
-		var rect = textElement.getBBox();
-		textElement.setAttribute("x", this.x - (rect.width/2));
-		textElement.setAttribute("y", this.y);
-
 		this.labelTextElement = textElement;
-
 		this.canvas.nodes.push(this);
+
+		this.move(this.x, this.y);
 
     }; // End of show()
 
+    Node.prototype.linkTo = function(node) {
+		var line = document.createElementNS(SVGNS, "line");
+		line.setAttribute("x1", "");
+		line.setAttribute("y1", "");
+		line.setAttribute("x2", "");
+
+    }; // End of linkTo()
+
     Node.prototype.move = function(x, y) {
+		this.x = x;
+		this.y = y;
 		this.circleElement.setAttribute("cx", x);
 		this.circleElement.setAttribute("cy", y);
 		var rect = this.labelTextElement.getBBox();

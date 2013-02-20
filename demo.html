@@ -9,21 +9,22 @@
 
 $(function() {
 var canvas1 = new wfjs.Canvas("div_target");
-var c1 = new wfjs.Node(canvas1, 10, 30, "ccc", {
+var node1 = new wfjs.Node(canvas1, 30, 40, "First", {
 		r: "30",
 		stroke: "black",
 		"stroke-width": "2",
 		fill: "yellow",
 });
 
-var c2 = new wfjs.Node(canvas1, 50, 30, "ddd", {
+var node2 = new wfjs.Node(canvas1, 80, 120, "second", {
 		r: "30",
 		stroke: "red",
 		"stroke-width": "2",
 		fill: "yellow",
 });
-c1.show();
-c2.show();
+node1.show();
+node2.show();
+node1.linkTo(node2);
 
 
 });
