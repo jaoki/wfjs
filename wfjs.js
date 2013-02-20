@@ -122,17 +122,18 @@ wfjs1.Node = (function () {
 
     Node.prototype.linkTo = function(node) {
 		var lineElement = document.createElementNS(SVGNS, "line");
-		lineElement.setAttribute("x1", this.x);
-		lineElement.setAttribute("y1", this.y);
 
 		// The line end should not be the center of the target object, since it needs an arrow mark.
-//		var radian = Math.atan2(node.y - this.y, node.x - this.x);
+		var startRadian = Math.atan2(node.y - this.y, node.x - this.x);
+		var startX = this.circle_options.r * Math.cos(startRadian) + this.x;
+		var startY = this.circle_options.r * Math.sin(startRadian) + this.y;
+		lineElement.setAttribute("x1", startX);
+		lineElement.setAttribute("y1", startY);
+
 		var radian = Math.atan2(this.y - node.y, this.x - node.x);
-
 		var endX = node.circle_options.r * Math.cos(radian) + node.x;
-		lineElement.setAttribute("x2", endX);
-
 		var endY = node.circle_options.r * Math.sin(radian) + node.y;
+		lineElement.setAttribute("x2", endX);
 		lineElement.setAttribute("y2", endY);
 
 		lineElement.setAttribute("style", "stroke: black;stroke-width:1;");
