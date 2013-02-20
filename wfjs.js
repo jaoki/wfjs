@@ -36,6 +36,14 @@ wfjs1.Canvas = (function () {
 			}
 		};
 
+//		var _onMouseMove = function(e){
+//			if(draggingTarget != null){
+//				var targetId = draggingTarget.getAttribute("id");
+//				var node = _this.nodes.getById(targetId);
+//				node.move(e.offsetX, e.offsetY);
+//			}
+//		};
+
         this.containerId = containerId;
 		this.container = document.getElementById(containerId);
 
@@ -43,6 +51,8 @@ wfjs1.Canvas = (function () {
 		svgElement.setAttribute("id", "wfjs_svg");
 		svgElement.setAttribute("version", "1.1");
 		svgElement.addEventListener("mouseup", _onMouseUp, false);
+//		svgElement.addEventListener("mousemove", _onMouseMove, false);
+
 		this.container.appendChild(svgElement);
 		this.svgElement = svgElement;
 
@@ -127,6 +137,7 @@ wfjs1.Node = (function () {
 
     Node.prototype.move = function(x, y) {
 		this.x = x;
+		console.debug(x);
 		this.y = y;
 		this.circleElement.setAttribute("cx", x);
 		this.circleElement.setAttribute("cy", y);
@@ -181,7 +192,7 @@ wfjs1.FlowLine = (function () {
 		this.arrowPathElement.setAttribute("d", "M" + endX + " " + endY + " " + HEAD_SHAPE_PATH);
 		this.arrowPathElement.setAttribute("transform", "rotate(" + endDigree + " " + endX + " " + endY + ")");
 
-    }; // End of move()
+    }; // End of relocate()
 
     return FlowLine;
 })(); // End of wfjs1.FlowLine 
