@@ -25,15 +25,8 @@ wfjs1.Canvas = (function () {
 //				draggingTarget.setAttribute("cx", e.pageX);
 //				draggingTarget.setAttribute("cy", e.pageY);
 				var targetId = draggingTarget.getAttribute("id");
-// TODO				var children = _this.children.getById(targetId).move();
 				var node = _this.nodes.getById(targetId);
 				node.move(e.offsetX, e.offsetY);
-//				for(var i = 0; i < children.length; i++){
-//					var text  = children[i];
-//					var rect = text.getBBox();
-//					text.setAttribute("x", e.pageX - (rect.width/2));
-//					text.setAttribute("y", e.pageY);
-//				}
 				draggingTarget = null;
 			}
 		};
@@ -55,6 +48,7 @@ wfjs1.Canvas = (function () {
 					return this[i];
 				}
 			}
+			return null;
 		}
     }
 
@@ -74,20 +68,19 @@ wfjs1.Node = (function () {
     };
 
     Node.prototype.show = function () {
-		//var circleId = "wfjs_circle_";
 //		var textId = "wfjs_circle_" + this.circles.length + "_text";
 		var textId = "wfjs_circle__text";
 
-		this.circle = document.createElementNS(SVGNS, "circle");
-		this.circle.setAttribute("id", this.id);
+		this.circleElement = document.createElementNS(SVGNS, "circle");
+		this.circleElement.setAttribute("id", this.id);
 
 		for(var attr in this.circle_options){
-			this.circle.setAttribute(attr, this.circle_options[attr]);
+			this.circleElement.setAttribute(attr, this.circle_options[attr]);
 		}
-		this.circle.setAttribute("cx", this.x);
-		this.circle.setAttribute("cy", this.y);
-		this.circle.addEventListener("mousedown", _onMouseDown, false);
-		this.canvas.svgElement.appendChild(this.circle);
+		this.circleElement.setAttribute("cx", this.x);
+		this.circleElement.setAttribute("cy", this.y);
+		this.circleElement.addEventListener("mousedown", _onMouseDown, false);
+		this.canvas.svgElement.appendChild(this.circleElement);
         
 		var text = document.createElementNS(SVGNS, "text");
 
@@ -112,15 +105,12 @@ wfjs1.Node = (function () {
 		this.children.push(text);
 
 		this.canvas.nodes.push(this);
-//		this.canvas.nodes.push({
-//			id : this.id,
-//			obj : this,
-//		});
+
     }; // End of show()
 
     Node.prototype.move = function(x, y) {
-		this.circle.setAttribute("cx", x);
-		this.circle.setAttribute("cy", y);
+		this.circleElement.setAttribute("cx", x);
+		this.circleElement.setAttribute("cy", y);
 //		var children = this.children.getById(targetId).move();
 		for(var i = 0; i < this.children.length; i++){
 			var text  = this.children[i];
