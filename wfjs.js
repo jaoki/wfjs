@@ -29,20 +29,23 @@ wfjs1.Canvas = (function () {
 		var _this = this;
 		var _onMouseUp = function(e){
 			if(draggingTarget != null){
-				var targetId = draggingTarget.getAttribute("id");
-				var node = _this.nodes.getById(targetId);
-				node.move(e.offsetX, e.offsetY);
+//				var targetId = draggingTarget.getAttribute("id");
+//				var node = _this.nodes.getById(targetId);
+//				node.move(e.offsetX, e.offsetY);
 				draggingTarget = null;
 			}
 		};
 
-//		var _onMouseMove = function(e){
-//			if(draggingTarget != null){
-//				var targetId = draggingTarget.getAttribute("id");
-//				var node = _this.nodes.getById(targetId);
+		var _onMouseMove = function(e){
+			if(draggingTarget != null){
+				var targetId = draggingTarget.getAttribute("id");
+				var node = _this.nodes.getById(targetId);
 //				node.move(e.offsetX, e.offsetY);
-//			}
-//		};
+				node.move(e.x, e.y);
+				console.debug(e.target);
+				console.debug("offsetX: " + e.offsetX + " e.x" + e.x);
+			}
+		};
 
         this.containerId = containerId;
 		this.container = document.getElementById(containerId);
@@ -51,7 +54,7 @@ wfjs1.Canvas = (function () {
 		svgElement.setAttribute("id", "wfjs_svg");
 		svgElement.setAttribute("version", "1.1");
 		svgElement.addEventListener("mouseup", _onMouseUp, false);
-//		svgElement.addEventListener("mousemove", _onMouseMove, false);
+		svgElement.addEventListener("mousemove", _onMouseMove, false);
 
 		this.container.appendChild(svgElement);
 		this.svgElement = svgElement;
