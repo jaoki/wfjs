@@ -77,8 +77,6 @@ wfjs1.Node = (function () {
     };
 
     Node.prototype.show = function () {
-//		var textId = "wfjs_circle_" + this.circles.length + "_text";
-		var textId = "wfjs_circle__text";
 
 		this.circleElement = document.createElementNS(SVGNS, "circle");
 		this.circleElement.setAttribute("id", this.id);
@@ -96,7 +94,6 @@ wfjs1.Node = (function () {
         
 		var textElement = document.createElementNS(SVGNS, "text");
 
-		textElement.setAttribute("id", textId);
 		textElement.textContent = this.label;
 
 		for(var attr in TEXT_DEFAULT_OPTIONS){
@@ -124,8 +121,8 @@ wfjs1.Node = (function () {
 		lineElement.setAttribute("x2", node.x);
 		lineElement.setAttribute("y2", node.y);
 		lineElement.setAttribute("style", "stroke: black;stroke-width:1;");
-//		this.canvas.svgElement.appendChild(lineElement);
-		this.canvas.svgElement.insertBefore(lineElement, this.canvas.svgElement.firstChild);
+		this.canvas.svgElement.appendChild(lineElement);
+//		this.canvas.svgElement.insertBefore(lineElement, this.canvas.svgElement.firstChild);
 		this.lineFroms.push(lineElement);
 		node.lineTos.push(lineElement);
 
