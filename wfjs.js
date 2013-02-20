@@ -15,6 +15,14 @@ var CIRCLE_DEFAULT_OPTIONS = {
 	fill: "yellow",
 };
 
+var DIAMOND_DEFAULT_OPTIONS = {
+	stroke: "yellow",
+	"stroke-width": "2",
+	fill: "DarkSeaGreen",
+	width : 60,
+	height : 60,
+};
+
 
 wfjs1.Canvas = (function () {
 	var draggingNode = null;
@@ -70,10 +78,10 @@ wfjs1.Canvas = (function () {
     return Canvas;
 })();
 
-wfjs1.Node = (function () {
+wfjs1.CircleNode = (function () {
 	var index = 0; 
 
-    function Node(canvas, x, y, label, circle_options, text_options) {
+    function CircleNode(canvas, x, y, label, circle_options, text_options) {
 		this.id = "wfjs_node_" + index;
 		index++;
         this.canvas = canvas;
@@ -93,7 +101,7 @@ wfjs1.Node = (function () {
 		this.flowlines = [];
     };
 
-    Node.prototype.show = function () {
+    CircleNode.prototype.show = function () {
 
 		this.circleElement = document.createElementNS(SVGNS, "circle");
 		this.circleElement.setAttribute("id", this.id);
@@ -128,18 +136,19 @@ wfjs1.Node = (function () {
 
     }; // End of show()
 
-    Node.prototype.connectTo = function(node) {
+    CircleNode.prototype.connectTo = function(node) {
 		var flowLine = new wfjs1.FlowLine(this.canvas, this, node);
 		this.flowlines.push(flowLine);
 		node.flowlines.push(flowLine);
 
     }; // End of connectTo()
 
-    Node.prototype.move = function(x, y) {
+    CircleNode.prototype.move = function(x, y) {
 		this.x = x;
 		this.y = y;
 		this.circleElement.setAttribute("cx", x);
 		this.circleElement.setAttribute("cy", y);
+		// label position
 		var rect = this.labelTextElement.getBBox();
 		this.labelTextElement.setAttribute("x", x - (rect.width/2));
 		this.labelTextElement.setAttribute("y", y + 5); // TODO what is this magic number?
@@ -149,8 +158,46 @@ wfjs1.Node = (function () {
 
     }; // End of move()
 
-    return Node;
+    return CircleNode;
 })(); // End of wfjs1.Node 
+
+wfjs1.DiamondNode = (function () {
+    function DiamondNode(canvas, x, y, label){
+		this.canvas = canvas;
+        this.x = x;
+        this.y = y;
+        this.label = label;
+
+		this.rectElement = document.createElementNS(SVGNS, "rect");
+		this.rectElement.setAttribute("transform", "rotate(45 " + x + " " + y + ")");
+
+		for(var attr in DIAMOND_DEFAULT_OPTIONS){
+			this.rectElement.setAttribute(attr, DIAMOND_DEFAULT_OPTIONS[attr]);
+		}
+		this.canvas.svgElement.appendChild(this.rectElement);
+
+		// label
+		this.textElement = document.createElementNS(SVGNS, "text");
+		this.textElement.textContent = this.label;
+		this.canvas.svgElement.appendChild(this.textElement);
+//		this.canvas.nodes.push(this);
+
+		this.move(x, y);
+	};
+
+    DiamondNode.prototype.move = function(x, y) {
+
+		this.rectElement.setAttribute("x", x);
+		this.rectElement.setAttribute("y", y);
+
+		var rect = this.textElement.getBBox();
+		this.textElement.setAttribute("x", x - (rect.width/2));
+		this.textElement.setAttribute("y", y + 46); // TODO magic number
+
+    }; // End of move()
+
+    return DiamondNode;
+})(); // End of wfjs1.DiamondNode 
 
 wfjs1.FlowLine = (function () {
 	var HEAD_SHAPE_PATH = "l-5 10 l10 0 Z";

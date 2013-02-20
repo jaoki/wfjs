@@ -9,32 +9,33 @@
 
 $(function() {
 var canvas1 = new wfjs.Canvas("div_target");
-var node1 = new wfjs.Node(canvas1, 80, 50, "First", {
+var circle1 = new wfjs.CircleNode(canvas1, 80, 50, "First", {
 		r: 30,
 		stroke: "black",
 		"stroke-width": "2",
 		fill: "yellow",
 });
 
-var node2 = new wfjs.Node(canvas1, 40, 120, "second", {
+var circle2 = new wfjs.CircleNode(canvas1, 40, 120, "second", {
 		r: 30,
 		stroke: "red",
 		"stroke-width": "2",
 		fill: "yellow",
 });
 
-var node3 = new wfjs.Node(canvas1, 300, 120, "THIRD");
-var node4 = new wfjs.Node(canvas1, 200, 200, "4th Unconnected");
+var circle3 = new wfjs.CircleNode(canvas1, 300, 120, "THIRD");
+var circle4 = new wfjs.CircleNode(canvas1, 200, 200, "4th Unconnected");
 
-node1.show();
-node2.show();
-node3.show();
-node4.show();
+circle1.show();
+circle2.show();
+circle3.show();
+circle4.show();
+var dia1 = new wfjs.DiamondNode(canvas1, 200, 100, "decision1");
 
-node1.connectTo(node2);
-node1.connectTo(node3);
+circle1.connectTo(circle2);
+circle1.connectTo(circle3);
 
-var flowline1 = new wfjs.FlowLine(canvas1, node3, node4);
+var flowline1 = new wfjs.FlowLine(canvas1, circle3, circle4);
 
 
 });
