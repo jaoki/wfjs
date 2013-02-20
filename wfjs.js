@@ -9,7 +9,7 @@ var TEXT_DEFAULT_OPTIONS = {
 };
 
 var CIRCLE_DEFAULT_OPTIONS = {
-	r: "30",
+	r: 30,
 	stroke: "blue",
 	"stroke-width": "2",
 	fill: "yellow",
@@ -70,7 +70,17 @@ wfjs1.Node = (function () {
         this.x = x;
         this.y = y;
         this.label = label;
-        this.circle_options = circle_options;
+
+		this.circle_options = {};
+		for(var attr in CIRCLE_DEFAULT_OPTIONS){
+			this.circle_options[attr] = CIRCLE_DEFAULT_OPTIONS[attr];
+		}
+		for(var attr in circle_options){
+			this.circle_options[attr] = circle_options[attr];
+		}
+
+//        this.circle_options = circle_options;
+
         this.text_options = text_options;
 		this.lineTos = [];
 		this.lineFroms = [];
@@ -81,9 +91,9 @@ wfjs1.Node = (function () {
 		this.circleElement = document.createElementNS(SVGNS, "circle");
 		this.circleElement.setAttribute("id", this.id);
 
-		for(var attr in CIRCLE_DEFAULT_OPTIONS){
-			this.circleElement.setAttribute(attr, CIRCLE_DEFAULT_OPTIONS[attr]);
-		}
+//		for(var attr in CIRCLE_DEFAULT_OPTIONS){
+//			this.circleElement.setAttribute(attr, CIRCLE_DEFAULT_OPTIONS[attr]);
+//		}
 
 		for(var attr in this.circle_options){
 			this.circleElement.setAttribute(attr, this.circle_options[attr]);
@@ -118,8 +128,24 @@ wfjs1.Node = (function () {
 		var lineElement = document.createElementNS(SVGNS, "line");
 		lineElement.setAttribute("x1", this.x);
 		lineElement.setAttribute("y1", this.y);
-		lineElement.setAttribute("x2", node.x);
-		lineElement.setAttribute("y2", node.y);
+
+		// The line end should not be the center of the target object, since it needs an arrow mark.
+		var endX;
+		if(this.x < node.x){
+			endX = node.x - node.circle_options.r;
+		}else{
+			endX = node.x + node.circle_options.r;
+		}
+		lineElement.setAttribute("x2", endX);
+
+		var endY;
+		if(this.y < node.y){
+			endY = node.y - node.circle_options.r;
+		}else{
+			endY = node.y + node.circle_options.r;
+		}
+		lineElement.setAttribute("y2", endY);
+
 		lineElement.setAttribute("style", "stroke: black;stroke-width:1;");
 		this.canvas.svgElement.appendChild(lineElement);
 //		this.canvas.svgElement.insertBefore(lineElement, this.canvas.svgElement.firstChild);
