@@ -5,6 +5,15 @@
 	<script type="text/javascript" src='lib/jquery-1.9.1.min.js'></script>
 	<script type="text/javascript" src='wfjs.js'></script>
 
+	<style>
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  position: relative;
+}
+
+	</style>
 	<script type="text/javascript">
 
 $(function() {
@@ -31,6 +40,7 @@ circle2.show();
 circle3.show();
 circle4.show();
 var dia1 = new wfjs.DiamondNode(canvas1, 200, 100, "decision1");
+var dia2 = new wfjs.DiamondNode(canvas1, 10, 10, "kij 10x10");
 
 circle1.connectTo(circle2);
 circle1.connectTo(circle3);
@@ -43,6 +53,9 @@ var flowline1 = new wfjs.FlowLine(canvas1, circle3, circle4);
 	</script>
 </head>
 <body>
+	<div style="width:500px; height:30px; border: 1px solid;">
+		some title
+	</div>
 	<div id="div_target" style="width:500px; height:500px; background-color: pink;"></div>
 
 

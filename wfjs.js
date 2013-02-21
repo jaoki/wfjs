@@ -40,10 +40,23 @@ wfjs1.Canvas = (function () {
 		};
 
 		var _onMouseMove = function(e){
-			if(draggingNode != null){
-				draggingNode.move(e.x, e.y);
+			if(draggingNode != null ){
+				var x, y;
+				if(e.offsetX==undefined){ // Firefox
+					x = e.pageX-$(_canvasInstance.svgElement).offset().left;
+					y = e.pageY-$(_canvasInstance.svgElement).offset().top;
+				}else{ // Chrome
+					x = e.offsetX;
+					y = e.offsetY;
+				}
+				
+
+				draggingNode.move(x, y);
+//				draggingNode.move(e.layerX, e.layerY);
+//				draggingNode.move(e.x, e.y);
 //				console.debug(e.target);
-//				console.debug("offsetX: " + e.offsetX + " e.x" + e.x);
+//				console.debug("offsetX: " + e.offsetX + " e.x:" + e.x + " layerX:" + e.layerX);
+				console.debug("tag:" + e.target.tagName + " screenY: " + e.screenY + " pageY: " + e.pageY + " clientY: " + e.clientY + " offsetY: " + e.offsetY + " e.y:" + e.y + " layerY:" + e.layerY);
 			}
 		};
 
@@ -54,6 +67,7 @@ wfjs1.Canvas = (function () {
 		svgElement.setAttribute("id", "wfjs_svg");
 		svgElement.setAttribute("version", "1.1");
 		svgElement.addEventListener("mouseup", _onMouseUp, false);
+//		$(svgElement).on('mousemove', _onMouseMove);
 		svgElement.addEventListener("mousemove", _onMouseMove, false);
 
 		this.container.appendChild(svgElement);
