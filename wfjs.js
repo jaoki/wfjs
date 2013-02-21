@@ -242,6 +242,8 @@ wfjs1.DiamondNode = (function () {
 		this.canvas.svgElement.appendChild(this.labelTextElement);
 		this.canvas.nodes.push(this);
 
+		this.flowlines = [];
+
 		this.move(x, y);
 	};
 
@@ -263,7 +265,7 @@ wfjs1.DiamondNode = (function () {
 })(); // End of wfjs1.DiamondNode 
 
 wfjs1.FlowLine = (function () {
-	var HEAD_SHAPE_PATH = "l-5 10 l10 0 Z";
+	var ARROW_HEAD_SHAPE_PATH = "l-5 10 l10 0 Z";
 
     function FlowLine(canvas, startNode, endNode){
 		this.canvas = canvas;
@@ -284,21 +286,33 @@ wfjs1.FlowLine = (function () {
 	};
 
     FlowLine.prototype.relocate = function(){
-		// The line end should not be the center of the target object, since it needs an arrow mark.
-		var startRadian = Math.atan2(this.endNode.y - this.startNode.y, this.endNode.x - this.startNode.x);
-		var startX = this.startNode.circle_attrs.r * Math.cos(startRadian) + this.startNode.x;
-		var startY = this.startNode.circle_attrs.r * Math.sin(startRadian) + this.startNode.y;
+		var startX, startY, endX, endY;
+		if(this.startNode instanceof wfjs1.CircleNode){
+			// The line end should not be the center of the target object, since it needs an arrow mark.
+			var startRadian = Math.atan2(this.endNode.y - this.startNode.y, this.endNode.x - this.startNode.x);
+			startX = this.startNode.circle_attrs.r * Math.cos(startRadian) + this.startNode.x;
+			startY = this.startNode.circle_attrs.r * Math.sin(startRadian) + this.startNode.y;
+		}else if(this.startNode instanceof wfjs1.DiamondNode){
+			startX = this.startNode.x;
+			startY = this.startNode.y;
+		}
+
+		if(this.endNode instanceof wfjs1.CircleNode){
+			var endRadian = Math.atan2(this.startNode.y - this.endNode.y, this.startNode.x - this.endNode.x);
+			endX = this.endNode.circle_attrs.r * Math.cos(endRadian) + this.endNode.x;
+			endY = this.endNode.circle_attrs.r * Math.sin(endRadian) + this.endNode.y;
+		}else if(this.endNode instanceof wfjs1.DiamondNode){
+			endX = this.endNode.x;
+			endY = this.endNode.y;
+		}
+
 		this.lineElement.setAttribute("x1", startX);
 		this.lineElement.setAttribute("y1", startY);
-
-		var endRadian = Math.atan2(this.startNode.y - this.endNode.y, this.startNode.x - this.endNode.x);
-		var endX = this.endNode.circle_attrs.r * Math.cos(endRadian) + this.endNode.x;
-		var endY = this.endNode.circle_attrs.r * Math.sin(endRadian) + this.endNode.y;
 		this.lineElement.setAttribute("x2", endX);
 		this.lineElement.setAttribute("y2", endY);
 
 		var endDigree = (endRadian * 180 / Math.PI) - 90;
-		this.arrowPathElement.setAttribute("d", "M" + endX + " " + endY + " " + HEAD_SHAPE_PATH);
+		this.arrowPathElement.setAttribute("d", "M" + endX + " " + endY + " " + ARROW_HEAD_SHAPE_PATH);
 		this.arrowPathElement.setAttribute("transform", "rotate(" + endDigree + " " + endX + " " + endY + ")");
 
     }; // End of relocate()

@@ -43,6 +43,7 @@ var dia1 = new wfjs.DiamondNode(canvas1, 200, 100, "decision1");
 var dia2 = new wfjs.DiamondNode(canvas1, 10, 10, "kij 10x10");
 
 circle1.connectTo(circle2);
+circle1.connectTo(dia1);
 circle1.connectTo(circle3);
 
 var flowline1 = new wfjs.FlowLine(canvas1, circle3, circle4);
