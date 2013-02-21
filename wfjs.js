@@ -42,12 +42,12 @@ wfjs1.Canvas = (function () {
 		var _onMouseMove = function(e){
 			if(draggingNode != null ){
 				var x, y;
-				if(e.offsetX==undefined){ // Firefox
+				if(e.layerX==undefined){ // Firefox
 					x = e.pageX-$(_canvasInstance.svgElement).offset().left;
 					y = e.pageY-$(_canvasInstance.svgElement).offset().top;
 				}else{ // Chrome
-					x = e.offsetX;
-					y = e.offsetY;
+					x = e.layerX;
+					y = e.layerY;
 				}
 				
 
@@ -68,7 +68,7 @@ wfjs1.Canvas = (function () {
 		svgElement.setAttribute("version", "1.1");
 		svgElement.addEventListener("mouseup", _onMouseUp, false);
 //		$(svgElement).on('mousemove', _onMouseMove);
-		svgElement.addEventListener("mousemove", _onMouseMove, false);
+		svgElement.addEventListener("mousemove", _onMouseMove, true);
 
 		this.container.appendChild(svgElement);
 		this.svgElement = svgElement;
