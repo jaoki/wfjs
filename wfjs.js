@@ -49,14 +49,9 @@ wfjs1.Canvas = (function () {
 					x = e.layerX;
 					y = e.layerY;
 				}
-				
 
 				draggingNode.move(x, y);
-//				draggingNode.move(e.layerX, e.layerY);
-//				draggingNode.move(e.x, e.y);
-//				console.debug(e.target);
-//				console.debug("offsetX: " + e.offsetX + " e.x:" + e.x + " layerX:" + e.layerX);
-				console.debug("tag:" + e.target.tagName + " screenY: " + e.screenY + " pageY: " + e.pageY + " clientY: " + e.clientY + " offsetY: " + e.offsetY + " e.y:" + e.y + " layerY:" + e.layerY);
+//				console.debug("tag:" + e.target.tagName + " screenY: " + e.screenY + " pageY: " + e.pageY + " clientY: " + e.clientY + " offsetY: " + e.offsetY + " e.y:" + e.y + " layerY:" + e.layerY);
 			}
 		};
 
@@ -67,7 +62,6 @@ wfjs1.Canvas = (function () {
 		svgElement.setAttribute("id", "wfjs_svg");
 		svgElement.setAttribute("version", "1.1");
 		svgElement.addEventListener("mouseup", _onMouseUp, false);
-//		$(svgElement).on('mousemove', _onMouseMove);
 		svgElement.addEventListener("mousemove", _onMouseMove, true);
 
 		this.container.appendChild(svgElement);
