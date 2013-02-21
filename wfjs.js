@@ -30,6 +30,8 @@ var DIAMOND_DEFAULT_ATTRIBUTES = {
 
 wfjs1.Canvas = (function () {
 	var draggingNode = null;
+	var draggingNodeOffsetX = 0;
+	var draggingNodeOffsetY = 0;
 
 	var _canvasInstance;
     function Canvas(containerId) {
@@ -52,7 +54,9 @@ wfjs1.Canvas = (function () {
 					y = e.layerY;
 				}
 
-				draggingNode.move(x, y);
+				draggingNode.move(x - draggingNodeOffsetX, y - draggingNodeOffsetY);
+				e.stopPropagation();
+				e.preventDefault();
 //				console.debug("tag:" + e.target.tagName + " screenY: " + e.screenY + " pageY: " + e.pageY + " clientY: " + e.clientY + " offsetY: " + e.offsetY + " e.y:" + e.y + " layerY:" + e.layerY);
 			}
 		};
@@ -63,8 +67,10 @@ wfjs1.Canvas = (function () {
 		var svgElement = document.createElementNS(SVGNS, "svg");
 		svgElement.setAttribute("id", "wfjs_svg");
 		svgElement.setAttribute("version", "1.1");
-		svgElement.addEventListener("mouseup", _onMouseUp, false);
-		svgElement.addEventListener("mousemove", _onMouseMove, true);
+		//svgElement.addEventListener("mouseup", _onMouseUp, false);
+//		svgElement.addEventListener("mousemove", _onMouseMove, true);
+		document.addEventListener("mouseup", _onMouseUp, false);
+		document.addEventListener("mousemove", _onMouseMove, false);
 
 		this.container.appendChild(svgElement);
 		this.svgElement = svgElement;
@@ -112,6 +118,15 @@ wfjs1.Canvas = (function () {
 	Canvas.prototype._onMouseDown = function(e){
 		var targetId = e.target.getAttribute("id");
 		draggingNode = _canvasInstance.nodes.getById(targetId);
+		if(e.offsetX==undefined){ // Firefox
+			draggingNodeOffsetX = e.pageX-$(_canvasInstance.svgElement).offset().left - draggingNode.y;
+			draggingNodeOffsetY = e.pageY-$(_canvasInstance.svgElement).offset().top - draggingNode.y;
+//			draggingNodeOffsetX = e.clientX - draggingNode.x;
+//			draggingNodeOffsetY = e.clientY - draggingNode.y;
+		}else{ // Chrome
+			draggingNodeOffsetX = e.layerX - draggingNode.x;
+			draggingNodeOffsetY = e.layerY - draggingNode.y;
+		}
 		e.preventDefault();
 	};
 
