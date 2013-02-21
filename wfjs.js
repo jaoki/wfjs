@@ -133,6 +133,19 @@ wfjs1.Canvas = (function () {
     return Canvas;
 })();
 
+wfjs1.BaseNode = (function () {
+    function BaseNode(){};
+
+    BaseNode.prototype.connectTo = function(node) {
+		var flowLine = new wfjs1.FlowLine(this.canvas, this, node);
+		this.flowlines.push(flowLine);
+		node.flowlines.push(flowLine);
+
+    }; // End of connectTo()
+
+    return BaseNode;
+})(); // End of wfjs1.CircleNode
+
 wfjs1.CircleNode = (function () {
 	var index = 0; 
 
@@ -156,6 +169,7 @@ wfjs1.CircleNode = (function () {
 		this.flowlines = [];
     };
 
+	CircleNode.prototype = new wfjs1.BaseNode();
 
     CircleNode.prototype.show = function () {
 
@@ -191,12 +205,12 @@ wfjs1.CircleNode = (function () {
 
     }; // End of show()
 
-    CircleNode.prototype.connectTo = function(node) {
-		var flowLine = new wfjs1.FlowLine(this.canvas, this, node);
-		this.flowlines.push(flowLine);
-		node.flowlines.push(flowLine);
-
-    }; // End of connectTo()
+//	CircleNode.prototype.connectTo = function(node) {
+//		var flowLine = new wfjs1.FlowLine(this.canvas, this, node);
+//		this.flowlines.push(flowLine);
+//		node.flowlines.push(flowLine);
+//
+//	}; // End of connectTo()
 
     CircleNode.prototype.move = function(x, y) {
 		this.x = x;
@@ -247,6 +261,8 @@ wfjs1.DiamondNode = (function () {
 
 		this.move(x, y);
 	};
+
+	DiamondNode.prototype = new wfjs1.BaseNode();
 
     DiamondNode.prototype.move = function(x, y) {
 		this.x = x;
@@ -301,8 +317,8 @@ wfjs1.FlowLine = (function () {
 			startY = this.startNode.y;
 		}
 
+		var endRadian = Math.atan2(this.startNode.y - this.endNode.y, this.startNode.x - this.endNode.x);
 		if(this.endNode instanceof wfjs1.CircleNode){
-			var endRadian = Math.atan2(this.startNode.y - this.endNode.y, this.startNode.x - this.endNode.x);
 			endX = this.endNode.circle_attrs.r * Math.cos(endRadian) + this.endNode.x;
 			endY = this.endNode.circle_attrs.r * Math.sin(endRadian) + this.endNode.y;
 		}else if(this.endNode instanceof wfjs1.DiamondNode){
