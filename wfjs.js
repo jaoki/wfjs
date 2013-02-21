@@ -30,8 +30,7 @@ var DIAMOND_DEFAULT_ATTRIBUTES = {
 
 wfjs1.Canvas = (function () {
 	var draggingNode = null;
-	var draggingNodeOffsetX = 0;
-	var draggingNodeOffsetY = 0;
+	var draggingNodeOffset = {};
 
 	var _canvasInstance;
     function Canvas(elementId, width, height) {
@@ -45,18 +44,10 @@ wfjs1.Canvas = (function () {
 
 		var _onMouseMove = function(e){
 			if(draggingNode != null ){
-				var x, y;
-//				if(e.layerX==undefined){ // Firefox
-//					x = e.pageX-$(_canvasInstance.svgElement).offset().left;
-//					y = e.pageY-$(_canvasInstance.svgElement).offset().top;
-//				}else{ // Chrome
-//					x = e.layerX;
-//					y = e.layerY;
-					x = e.pageX - _canvasInstance.offsetBase().x;
-					y = e.pageY - _canvasInstance.offsetBase().y;
-//				}
+				var x = e.pageX - _canvasInstance.offsetBase().x;
+				var y = e.pageY - _canvasInstance.offsetBase().y;
 
-				draggingNode.move(x - draggingNodeOffsetX, y - draggingNodeOffsetY);
+				draggingNode.move(x - draggingNodeOffset.x, y - draggingNodeOffset.y);
 				e.stopPropagation();
 				e.preventDefault();
 //				console.debug("tag:" + e.target.tagName + " screenY: " + e.screenY + " pageY: " + e.pageY + " clientY: " + e.clientY + " offsetY: " + e.offsetY + " e.y:" + e.y + " layerY:" + e.layerY);
@@ -135,15 +126,8 @@ wfjs1.Canvas = (function () {
 	Canvas.prototype._onMouseDown = function(e){
 		var targetId = e.target.getAttribute("id");
 		draggingNode = _canvasInstance.nodes.getById(targetId);
-//		if(e.offsetX==undefined){ // Firefox
-//			draggingNodeOffsetX = e.pageX-$(_canvasInstance.svgElement).offset().left - draggingNode.y;
-//			draggingNodeOffsetY = e.pageY-$(_canvasInstance.svgElement).offset().top - draggingNode.y;
-////			draggingNodeOffsetX = e.clientX - draggingNode.x;
-////			draggingNodeOffsetY = e.clientY - draggingNode.y;
-//		}else{ // Chrome
-			draggingNodeOffsetX = e.pageX - _canvasInstance.offsetBase().x - draggingNode.x;
-			draggingNodeOffsetY = e.pageY - _canvasInstance.offsetBase().y - draggingNode.y;
-//		}
+		draggingNodeOffset.x = e.pageX - _canvasInstance.offsetBase().x - draggingNode.x;
+		draggingNodeOffset.y = e.pageY - _canvasInstance.offsetBase().y - draggingNode.y;
 		e.preventDefault();
 	};
 
