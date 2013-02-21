@@ -8,21 +8,23 @@ var TEXT_DEFAULT_OPTIONS = {
 	"font-size" : "1em",
 };
 
-var CIRCLE_DEFAULT_OPTIONS = {
+var CIRCLE_DEFAULT_ATTRIBUTES = {
 	r: 30,
 	stroke: "blue",
 	"stroke-width": "2",
 	fill: "yellow",
-	filter: "url(#dropshadow1)"
+	filter: "url(#dropshadow1)",
+	style: "cursor: move;",
 };
 
-var DIAMOND_DEFAULT_OPTIONS = {
+var DIAMOND_DEFAULT_ATTRIBUTES = {
 	stroke: "yellow",
 	"stroke-width": "2",
 	fill: "DarkSeaGreen",
 	width : 60,
 	height : 60,
-	filter: "url(#dropshadow1)"
+	filter: "url(#dropshadow1)",
+	style: "cursor: move;",
 };
 
 
@@ -120,20 +122,20 @@ wfjs1.Canvas = (function () {
 wfjs1.CircleNode = (function () {
 	var index = 0; 
 
-    function CircleNode(canvas, x, y, label, circle_options, text_options) {
-		this.id = "wfjs_node_" + index;
+    function CircleNode(canvas, x, y, label, circle_attrs, text_options) {
+		this.id = "wfjs_circle_node_" + index;
 		index++;
         this.canvas = canvas;
         this.x = x;
         this.y = y;
         this.label = label;
 
-		this.circle_options = {};
-		for(var attr in CIRCLE_DEFAULT_OPTIONS){
-			this.circle_options[attr] = CIRCLE_DEFAULT_OPTIONS[attr];
+		this.circle_attrs = {};
+		for(var name in CIRCLE_DEFAULT_ATTRIBUTES){
+			this.circle_attrs[name] = CIRCLE_DEFAULT_ATTRIBUTES[name];
 		}
-		for(var attr in circle_options){
-			this.circle_options[attr] = circle_options[attr];
+		for(var name in circle_attrs){
+			this.circle_attrs[name] = circle_attrs[name];
 		}
 
         this.text_options = text_options;
@@ -147,8 +149,8 @@ wfjs1.CircleNode = (function () {
 		this.circleElement.setAttribute("style", "cursor: move;");
 //		this.circleElement.setAttribute("filter", "url(#dropshadow1)");
 
-		for(var attr in this.circle_options){
-			this.circleElement.setAttribute(attr, this.circle_options[attr]);
+		for(var name in this.circle_attrs){
+			this.circleElement.setAttribute(name, this.circle_attrs[name]);
 		}
 
 		this.circleElement.addEventListener("mousedown", this.canvas._onMouseDown, false);
@@ -158,13 +160,13 @@ wfjs1.CircleNode = (function () {
 
 		textElement.textContent = this.label;
 
-		for(var attr in TEXT_DEFAULT_OPTIONS){
-			textElement.setAttribute(attr, TEXT_DEFAULT_OPTIONS[attr]);
+		for(var name in TEXT_DEFAULT_OPTIONS){
+			textElement.setAttribute(name, TEXT_DEFAULT_OPTIONS[name]);
 		}
 
 		if(this.text_options !=null && this.text_options !== undefined){
-			for(var attr in this.text_options){
-				textElement.setAttribute(attr, this.text_options[attr]);
+			for(var name in this.text_options){
+				textElement.setAttribute(name, this.text_options[name]);
 			}
 		}
 
@@ -202,25 +204,32 @@ wfjs1.CircleNode = (function () {
 })(); // End of wfjs1.Node 
 
 wfjs1.DiamondNode = (function () {
+	var index = 0; 
+
     function DiamondNode(canvas, x, y, label){
+		this.id = "wfjs_diamond_node_" + index;
+		index++;
 		this.canvas = canvas;
         this.x = x;
         this.y = y;
         this.label = label;
 
 		this.rectElement = document.createElementNS(SVGNS, "rect");
+		this.rectElement.addEventListener("mousedown", this.canvas._onMouseDown, false);
+		this.rectElement.setAttribute("id", this.id);
 		this.rectElement.setAttribute("transform", "rotate(45 " + x + " " + y + ")");
 
-		for(var attr in DIAMOND_DEFAULT_OPTIONS){
-			this.rectElement.setAttribute(attr, DIAMOND_DEFAULT_OPTIONS[attr]);
+		for(var name in DIAMOND_DEFAULT_ATTRIBUTES){
+			this.rectElement.setAttribute(name, DIAMOND_DEFAULT_ATTRIBUTES[name]);
 		}
 		this.canvas.svgElement.appendChild(this.rectElement);
 
 		// label
-		this.textElement = document.createElementNS(SVGNS, "text");
-		this.textElement.textContent = this.label;
-		this.canvas.svgElement.appendChild(this.textElement);
-//		this.canvas.nodes.push(this);
+		this.labelTextElement = document.createElementNS(SVGNS, "text");
+		this.labelTextElement.textContent = this.label;
+
+		this.canvas.svgElement.appendChild(this.labelTextElement);
+		this.canvas.nodes.push(this);
 
 		this.move(x, y);
 	};
@@ -230,9 +239,9 @@ wfjs1.DiamondNode = (function () {
 		this.rectElement.setAttribute("x", x);
 		this.rectElement.setAttribute("y", y);
 
-		var rect = this.textElement.getBBox();
-		this.textElement.setAttribute("x", x - (rect.width/2));
-		this.textElement.setAttribute("y", y + 46); // TODO magic number
+		var rect = this.labelTextElement.getBBox();
+		this.labelTextElement.setAttribute("x", x - (rect.width/2));
+		this.labelTextElement.setAttribute("y", y + 46); // TODO magic number
 
     }; // End of move()
 
@@ -263,14 +272,14 @@ wfjs1.FlowLine = (function () {
     FlowLine.prototype.relocate = function(){
 		// The line end should not be the center of the target object, since it needs an arrow mark.
 		var startRadian = Math.atan2(this.endNode.y - this.startNode.y, this.endNode.x - this.startNode.x);
-		var startX = this.startNode.circle_options.r * Math.cos(startRadian) + this.startNode.x;
-		var startY = this.startNode.circle_options.r * Math.sin(startRadian) + this.startNode.y;
+		var startX = this.startNode.circle_attrs.r * Math.cos(startRadian) + this.startNode.x;
+		var startY = this.startNode.circle_attrs.r * Math.sin(startRadian) + this.startNode.y;
 		this.lineElement.setAttribute("x1", startX);
 		this.lineElement.setAttribute("y1", startY);
 
 		var endRadian = Math.atan2(this.startNode.y - this.endNode.y, this.startNode.x - this.endNode.x);
-		var endX = this.endNode.circle_options.r * Math.cos(endRadian) + this.endNode.x;
-		var endY = this.endNode.circle_options.r * Math.sin(endRadian) + this.endNode.y;
+		var endX = this.endNode.circle_attrs.r * Math.cos(endRadian) + this.endNode.x;
+		var endY = this.endNode.circle_attrs.r * Math.sin(endRadian) + this.endNode.y;
 		this.lineElement.setAttribute("x2", endX);
 		this.lineElement.setAttribute("y2", endY);
 
