@@ -61,8 +61,6 @@ wfjs1.Canvas = (function () {
 		this.containerDivElm.setAttribute("id", "wfjs_container_div");
 		this.containerDivElm.setAttribute("style", "margin: 0px; padding 0px; width: " + width + "px; height: " + height + ";");
 		this.targetElement.appendChild(this.containerDivElm);
-		// $(this.containerDivElm).offset().left --> baseX
-		// $(this.containerDivElm).offset().top --> baseY
 
 		var svgElement = document.createElementNS(SVGNS, "svg");
 		svgElement.setAttribute("id", "wfjs_svg");
@@ -248,6 +246,8 @@ wfjs1.DiamondNode = (function () {
 	};
 
     DiamondNode.prototype.move = function(x, y) {
+		this.x = x;
+		this.y = y;
 
 		this.rectElement.setAttribute("transform", "rotate(45 " + x + " " + y + ")");
 		this.rectElement.setAttribute("x", x);
