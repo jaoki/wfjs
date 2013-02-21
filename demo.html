@@ -18,30 +18,30 @@
 
 $(function() {
 var canvas1 = new wfjs.Canvas("div_target", 500, 500);
-var circle1 = new wfjs.CircleNode(canvas1, 80, 50, "First", {
+var circle1 = new wfjs.CircleNode(canvas1, 100, 50, "First", {
 		r: 30,
 		stroke: "black",
 		"stroke-width": "2",
 		fill: "yellow",
 });
 
-var circle2 = new wfjs.CircleNode(canvas1, 40, 120, "second", {
+var circle2 = new wfjs.CircleNode(canvas1, 40, 150, "second", {
 		r: 30,
 		stroke: "red",
 		"stroke-width": "2",
 		fill: "yellow",
 });
 
-var circle3 = new wfjs.CircleNode(canvas1, 300, 120, "THIRD");
-var circle4 = new wfjs.CircleNode(canvas1, 200, 200, "4th Unconnected");
-var circle5 = new wfjs.CircleNode(canvas1, 200, 250, "五");
+var circle3 = new wfjs.CircleNode(canvas1, 300, 150, "THIRD");
+var circle4 = new wfjs.CircleNode(canvas1, 180, 250, "4th Unconnected");
+var circle5 = new wfjs.CircleNode(canvas1, 250, 300, "五");
 
 circle1.show();
 circle2.show();
 circle3.show();
 circle4.show();
 circle5.show();
-var dia1 = new wfjs.DiamondNode(canvas1, 200, 100, "decision1");
+var dia1 = new wfjs.DiamondNode(canvas1, 200, 130, "decision1");
 var dia2 = new wfjs.DiamondNode(canvas1, 10, 10, "kij 10x10");
 
 circle1.connectTo(circle2);

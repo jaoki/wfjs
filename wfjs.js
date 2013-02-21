@@ -205,13 +205,6 @@ wfjs1.CircleNode = (function () {
 
     }; // End of show()
 
-//	CircleNode.prototype.connectTo = function(node) {
-//		var flowLine = new wfjs1.FlowLine(this.canvas, this, node);
-//		this.flowlines.push(flowLine);
-//		node.flowlines.push(flowLine);
-//
-//	}; // End of connectTo()
-
     CircleNode.prototype.move = function(x, y) {
 		this.x = x;
 		this.y = y;
