@@ -146,8 +146,6 @@ wfjs1.CircleNode = (function () {
 
 		this.circleElement = document.createElementNS(SVGNS, "circle");
 		this.circleElement.setAttribute("id", this.id);
-		this.circleElement.setAttribute("style", "cursor: move;");
-//		this.circleElement.setAttribute("filter", "url(#dropshadow1)");
 
 		for(var name in this.circle_attrs){
 			this.circleElement.setAttribute(name, this.circle_attrs[name]);
@@ -217,7 +215,6 @@ wfjs1.DiamondNode = (function () {
 		this.rectElement = document.createElementNS(SVGNS, "rect");
 		this.rectElement.addEventListener("mousedown", this.canvas._onMouseDown, false);
 		this.rectElement.setAttribute("id", this.id);
-		this.rectElement.setAttribute("transform", "rotate(45 " + x + " " + y + ")");
 
 		for(var name in DIAMOND_DEFAULT_ATTRIBUTES){
 			this.rectElement.setAttribute(name, DIAMOND_DEFAULT_ATTRIBUTES[name]);
@@ -236,6 +233,7 @@ wfjs1.DiamondNode = (function () {
 
     DiamondNode.prototype.move = function(x, y) {
 
+		this.rectElement.setAttribute("transform", "rotate(45 " + x + " " + y + ")");
 		this.rectElement.setAttribute("x", x);
 		this.rectElement.setAttribute("y", y);
 
