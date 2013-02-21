@@ -259,6 +259,9 @@ wfjs1.DiamondNode = (function () {
 		var rect = this.labelTextElement.getBBox();
 		this.labelTextElement.setAttribute("x", x - (rect.width/2));
 		this.labelTextElement.setAttribute("y", y + 46); // TODO magic number
+		for(var i = 0; i < this.flowlines.length; i++){
+			this.flowlines[i].relocate();
+		}
 
     }; // End of move()
 
