@@ -34,7 +34,7 @@ wfjs1.Canvas = (function () {
 	var draggingNodeOffsetY = 0;
 
 	var _canvasInstance;
-    function Canvas(containerId) {
+    function Canvas(elementId, width, height) {
 		_canvasInstance = this;
 
 		var _onMouseUp = function(e){
@@ -61,18 +61,24 @@ wfjs1.Canvas = (function () {
 			}
 		};
 
-        this.containerId = containerId;
-		this.container = document.getElementById(containerId);
+        this.elementId = elementId;
+		this.targetElement = document.getElementById(elementId);
+
+		this.containerDivElm = document.createElement("div");
+		this.containerDivElm.setAttribute("id", "wfjs_container_div");
+		this.containerDivElm.setAttribute("style", "margin: 0px; padding 0px; width: " + width + "px; height: " + height + ";");
+		this.targetElement.appendChild(this.containerDivElm);
 
 		var svgElement = document.createElementNS(SVGNS, "svg");
 		svgElement.setAttribute("id", "wfjs_svg");
+		svgElement.setAttribute("style", "width: " + width + "px; height: " + height + ";");
 		svgElement.setAttribute("version", "1.1");
 		//svgElement.addEventListener("mouseup", _onMouseUp, false);
 //		svgElement.addEventListener("mousemove", _onMouseMove, true);
 		document.addEventListener("mouseup", _onMouseUp, false);
 		document.addEventListener("mousemove", _onMouseMove, false);
 
-		this.container.appendChild(svgElement);
+		this.containerDivElm.appendChild(svgElement);
 		this.svgElement = svgElement;
 
 		var defsElement = document.createElementNS(SVGNS, "defs");
