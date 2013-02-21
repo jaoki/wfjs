@@ -46,13 +46,15 @@ wfjs1.Canvas = (function () {
 		var _onMouseMove = function(e){
 			if(draggingNode != null ){
 				var x, y;
-				if(e.layerX==undefined){ // Firefox
-					x = e.pageX-$(_canvasInstance.svgElement).offset().left;
-					y = e.pageY-$(_canvasInstance.svgElement).offset().top;
-				}else{ // Chrome
-					x = e.layerX;
-					y = e.layerY;
-				}
+//				if(e.layerX==undefined){ // Firefox
+//					x = e.pageX-$(_canvasInstance.svgElement).offset().left;
+//					y = e.pageY-$(_canvasInstance.svgElement).offset().top;
+//				}else{ // Chrome
+//					x = e.layerX;
+//					y = e.layerY;
+					x = e.pageX - _canvasInstance.offsetBase().x;
+					y = e.pageY - _canvasInstance.offsetBase().y;
+//				}
 
 				draggingNode.move(x - draggingNodeOffsetX, y - draggingNodeOffsetY);
 				e.stopPropagation();
@@ -68,6 +70,8 @@ wfjs1.Canvas = (function () {
 		this.containerDivElm.setAttribute("id", "wfjs_container_div");
 		this.containerDivElm.setAttribute("style", "margin: 0px; padding 0px; width: " + width + "px; height: " + height + ";");
 		this.targetElement.appendChild(this.containerDivElm);
+		// $(this.containerDivElm).offset().left --> baseX
+		// $(this.containerDivElm).offset().top --> baseY
 
 		var svgElement = document.createElementNS(SVGNS, "svg");
 		svgElement.setAttribute("id", "wfjs_svg");
@@ -119,20 +123,27 @@ wfjs1.Canvas = (function () {
 			}
 			return null;
 		}
-    }
+    } // End of Canvas()
+
+	Canvas.prototype.offsetBase = function(){
+		return {
+			x: $(this.containerDivElm).offset().left,
+			y: $(this.containerDivElm).offset().top,
+		};
+	};
 
 	Canvas.prototype._onMouseDown = function(e){
 		var targetId = e.target.getAttribute("id");
 		draggingNode = _canvasInstance.nodes.getById(targetId);
-		if(e.offsetX==undefined){ // Firefox
-			draggingNodeOffsetX = e.pageX-$(_canvasInstance.svgElement).offset().left - draggingNode.y;
-			draggingNodeOffsetY = e.pageY-$(_canvasInstance.svgElement).offset().top - draggingNode.y;
-//			draggingNodeOffsetX = e.clientX - draggingNode.x;
-//			draggingNodeOffsetY = e.clientY - draggingNode.y;
-		}else{ // Chrome
-			draggingNodeOffsetX = e.layerX - draggingNode.x;
-			draggingNodeOffsetY = e.layerY - draggingNode.y;
-		}
+//		if(e.offsetX==undefined){ // Firefox
+//			draggingNodeOffsetX = e.pageX-$(_canvasInstance.svgElement).offset().left - draggingNode.y;
+//			draggingNodeOffsetY = e.pageY-$(_canvasInstance.svgElement).offset().top - draggingNode.y;
+////			draggingNodeOffsetX = e.clientX - draggingNode.x;
+////			draggingNodeOffsetY = e.clientY - draggingNode.y;
+//		}else{ // Chrome
+			draggingNodeOffsetX = e.pageX - _canvasInstance.offsetBase().x - draggingNode.x;
+			draggingNodeOffsetY = e.pageY - _canvasInstance.offsetBase().y - draggingNode.y;
+//		}
 		e.preventDefault();
 	};
 
