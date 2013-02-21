@@ -156,6 +156,7 @@ wfjs1.CircleNode = (function () {
 		this.flowlines = [];
     };
 
+
     CircleNode.prototype.show = function () {
 
 		this.circleElement = document.createElementNS(SVGNS, "circle");
@@ -213,7 +214,7 @@ wfjs1.CircleNode = (function () {
     }; // End of move()
 
     return CircleNode;
-})(); // End of wfjs1.Node 
+})(); // End of wfjs1.CircleNode
 
 wfjs1.DiamondNode = (function () {
 	var index = 0; 
