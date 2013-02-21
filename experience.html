@@ -1,0 +1,38 @@
+<html>
+<head>
+</head>
+<body>
+	<div id="workflow_diagram1" class="col1" style="width: 100px; height: 150px; overflow: auto; float:left;">
+		<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="506.5" height="200">
+			<circle id="circle_red" cx="50.25" cy="40.5" r="30" fill="red" stroke="#000" style="cursor: move;"> </circle>
+		</svg>
+	</div>
+
+	<div id="workflow_diagram2" class="col1" style="width: 100px; height: 150px; overflow: auto;">
+		<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="506.5" height="200">
+			<circle id="circle_yellow" cx="50.25" cy="40.5" r="30" fill="yellow" stroke="#000" style="cursor: move;"> </circle>
+		</svg>
+	</div>
+
+	<div id="workflow_diagram3" class="col1" style="width: 100px; height: 150px; overflow: auto; float: left;">
+		<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="506.5" height="200">
+			<circle id="circle_blue" cx="50.25" cy="40.5" r="30" fill="blue" stroke="#000" style="cursor: move;"> </circle>
+		</svg>
+	</div>
+
+	<div style="width: 400px; height: 150px; overflow: auto; ">
+		<span id="value1"></span>
+	</div>
+
+	<script>
+		var value1 = document.getElementById("value1");
+		value1.textContent = 
+			"yellow.offsetTop:" + document.getElementById("circle_yellow").parentElement.parentElement.offsetTop
+			+ " blue.offsetTop:" + document.getElementById("circle_blue").parentElement.parentElement.offsetTop
+
+		;
+
+	</script>
+</body>
+</html>
+
