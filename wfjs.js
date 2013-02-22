@@ -225,7 +225,7 @@ wfjs1.CircleNode = (function () {
 
 wfjs1.DiamondNode = (function () {
 	var index = 0; 
-	var WIDTH_HEIGHT = 45;
+	var WIDTH_HEIGHT = 40;
 
     function DiamondNode(canvas, cx, cy, label){
 		this.id = "wfjs_diamond_node_" + index;
@@ -307,15 +307,28 @@ wfjs1.FlowLine = (function () {
 	};
 
     FlowLine.prototype.relocate = function(){
+		var __WIDTH_HEIGHT = 40; // TODO duplicate. Use DiamondNode's
+
 		var startX, startY, endX, endY;
+		var startRadian = Math.atan2(this.endNode.cy - this.startNode.cy, this.endNode.cx - this.startNode.cx);
 		if(this.startNode instanceof wfjs1.CircleNode){
 			// The line end should not be the center of the target object, since it needs an arrow mark.
-			var startRadian = Math.atan2(this.endNode.cy - this.startNode.cy, this.endNode.cx - this.startNode.cx);
 			startX = this.startNode.circle_attrs.r * Math.cos(startRadian) + this.startNode.cx;
 			startY = this.startNode.circle_attrs.r * Math.sin(startRadian) + this.startNode.cy;
 		}else if(this.startNode instanceof wfjs1.DiamondNode){
-			startX = this.startNode.cx;
-			startY = this.startNode.cy;
+			if(startRadian < Math.PI/4 && startRadian > -1 * Math.PI/4 ){
+				startX = this.startNode.cx + __WIDTH_HEIGHT;
+				startY = this.startNode.cy;
+			}else if(startRadian < Math.PI/4*3 && startRadian > Math.PI/4 ){
+				startX = this.startNode.cx;
+				startY = this.startNode.cy + __WIDTH_HEIGHT;
+			}else if(startRadian < Math.PI/4*5 && startRadian > Math.PI/4*3 ){
+				startX = this.startNode.cx - __WIDTH_HEIGHT;
+				startY = this.startNode.cy;
+			}else{
+				startX = this.startNode.cx;
+				startY = this.startNode.cy - __WIDTH_HEIGHT;
+			}
 		}
 
 		var endRadian = Math.atan2(this.startNode.cy - this.endNode.cy, this.startNode.cx - this.endNode.cx);
@@ -325,8 +338,8 @@ wfjs1.FlowLine = (function () {
 		}else if(this.endNode instanceof wfjs1.DiamondNode){
 //			Math.cos(Math.PI / 180 * 45) * 60
 			
-			endX = this.endNode.cx;
-			endY = this.endNode.cy;
+			endX = this.endNode.cx; // TODO this should be dyanmic, depending on the other object
+			endY = this.endNode.cy; // - WIDTH_HEIGHT; // TODO this should be dyanmic, depending on the other object
 		}
 
 		this.lineElement.setAttribute("x1", startX);
