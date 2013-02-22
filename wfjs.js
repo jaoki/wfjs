@@ -352,8 +352,6 @@ wfjs1.FlowLine = (function () {
 				endY = this.endNode.cy - (this.endNode.height/2);
 			}
 			
-//			endX = this.endNode.cx; // TODO this should be dyanmic, depending on the other object
-//			endY = this.endNode.cy; // - WIDTH_HEIGHT; // TODO this should be dyanmic, depending on the other object
 		}
 
 		this.lineElement.setAttribute("x1", startX);
@@ -361,8 +359,8 @@ wfjs1.FlowLine = (function () {
 		this.lineElement.setAttribute("x2", endX);
 		this.lineElement.setAttribute("y2", endY);
 
-		// TODO arrow head is off from DiamondNode
-		var arrowHeadDigree = (startRadian * 180 / Math.PI) + 90;
+		var arrowHeadRadian = Math.atan2(endY- startY, endX - startX);
+		var arrowHeadDigree = (arrowHeadRadian * 180 / Math.PI) + 90;
 		this.arrowPathElement.setAttribute("d", "M" + endX + " " + endY + " " + ARROW_HEAD_SHAPE_PATH);
 		this.arrowPathElement.setAttribute("transform", "rotate(" + arrowHeadDigree + " " + endX + " " + endY + ")");
 
