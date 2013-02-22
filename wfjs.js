@@ -333,6 +333,7 @@ wfjs1.FlowLine = (function () {
 		}
 
 		var endRadian = Math.atan2(this.startNode.cy - this.endNode.cy, this.startNode.cx - this.endNode.cx);
+		console.debug(startRadian + ":" + endRadian +":" + (Math.abs(startRadian) + Math.abs(endRadian)));
 		if(this.endNode instanceof wfjs1.CircleNode){
 			endX = this.endNode.circle_attrs.r * Math.cos(endRadian) + this.endNode.cx;
 			endY = this.endNode.circle_attrs.r * Math.sin(endRadian) + this.endNode.cy;
@@ -348,9 +349,10 @@ wfjs1.FlowLine = (function () {
 		this.lineElement.setAttribute("x2", endX);
 		this.lineElement.setAttribute("y2", endY);
 
-		var endDigree = (endRadian * 180 / Math.PI) - 90;
+		// TODO arrow head is off from DiamondNode
+		var arrowHeadDigree = (startRadian * 180 / Math.PI) + 90;
 		this.arrowPathElement.setAttribute("d", "M" + endX + " " + endY + " " + ARROW_HEAD_SHAPE_PATH);
-		this.arrowPathElement.setAttribute("transform", "rotate(" + endDigree + " " + endX + " " + endY + ")");
+		this.arrowPathElement.setAttribute("transform", "rotate(" + arrowHeadDigree + " " + endX + " " + endY + ")");
 
     }; // End of relocate()
 
