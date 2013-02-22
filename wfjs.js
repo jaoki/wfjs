@@ -234,7 +234,8 @@ wfjs1.DiamondNode = (function () {
         this.cx = cx;
         this.cy = cy;
         this.label = label;
-
+		this.height = WIDTH_HEIGHT * 2;
+		this.width = WIDTH_HEIGHT * 2;
 
 
 		this.diaPathElm = document.createElementNS(SVGNS, "path");
@@ -307,7 +308,7 @@ wfjs1.FlowLine = (function () {
 	};
 
     FlowLine.prototype.relocate = function(){
-		var __WIDTH_HEIGHT = 40; // TODO duplicate. Use DiamondNode's
+//		var __WIDTH_HEIGHT = 40; // TODO duplicate. Use DiamondNode's
 
 		var startX, startY, endX, endY;
 		var startRadian = Math.atan2(this.endNode.cy - this.startNode.cy, this.endNode.cx - this.startNode.cx);
@@ -316,18 +317,18 @@ wfjs1.FlowLine = (function () {
 			startX = this.startNode.circle_attrs.r * Math.cos(startRadian) + this.startNode.cx;
 			startY = this.startNode.circle_attrs.r * Math.sin(startRadian) + this.startNode.cy;
 		}else if(this.startNode instanceof wfjs1.DiamondNode){
-			if(startRadian < Math.PI/4 && startRadian > -1 * Math.PI/4 ){
-				startX = this.startNode.cx + __WIDTH_HEIGHT;
+			if(Math.abs(startRadian) < Math.PI/4){
+				startX = this.startNode.cx + (this.startNode.width/2);
 				startY = this.startNode.cy;
 			}else if(startRadian < Math.PI/4*3 && startRadian > Math.PI/4 ){
 				startX = this.startNode.cx;
-				startY = this.startNode.cy + __WIDTH_HEIGHT;
-			}else if(startRadian < Math.PI/4*5 && startRadian > Math.PI/4*3 ){
-				startX = this.startNode.cx - __WIDTH_HEIGHT;
+				startY = this.startNode.cy + (this.startNode.height/2);
+			}else if(Math.abs(startRadian) > Math.PI/4*3 ){
+				startX = this.startNode.cx - (this.startNode.width/2);
 				startY = this.startNode.cy;
 			}else{
 				startX = this.startNode.cx;
-				startY = this.startNode.cy - __WIDTH_HEIGHT;
+				startY = this.startNode.cy - (this.startNode.height/2);
 			}
 		}
 
