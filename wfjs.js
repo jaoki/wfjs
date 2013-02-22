@@ -333,15 +333,27 @@ wfjs1.FlowLine = (function () {
 		}
 
 		var endRadian = Math.atan2(this.startNode.cy - this.endNode.cy, this.startNode.cx - this.endNode.cx);
-		console.debug(startRadian + ":" + endRadian +":" + (Math.abs(startRadian) + Math.abs(endRadian)));
+//		console.debug(startRadian + ":" + endRadian +":" + (Math.abs(startRadian) + Math.abs(endRadian)));
 		if(this.endNode instanceof wfjs1.CircleNode){
 			endX = this.endNode.circle_attrs.r * Math.cos(endRadian) + this.endNode.cx;
 			endY = this.endNode.circle_attrs.r * Math.sin(endRadian) + this.endNode.cy;
 		}else if(this.endNode instanceof wfjs1.DiamondNode){
-//			Math.cos(Math.PI / 180 * 45) * 60
+			if(Math.abs(endRadian) < Math.PI/4){
+				endX = this.endNode.cx + (this.endNode.width/2);
+				endY = this.endNode.cy;
+			}else if(endRadian < Math.PI/4*3 && endRadian > Math.PI/4 ){
+				endX = this.endNode.cx;
+				endY = this.endNode.cy + (this.endNode.height/2);
+			}else if(Math.abs(endRadian) > Math.PI/4*3 ){
+				endX = this.endNode.cx - (this.endNode.width/2);
+				endY = this.endNode.cy;
+			}else{
+				endX = this.endNode.cx;
+				endY = this.endNode.cy - (this.endNode.height/2);
+			}
 			
-			endX = this.endNode.cx; // TODO this should be dyanmic, depending on the other object
-			endY = this.endNode.cy; // - WIDTH_HEIGHT; // TODO this should be dyanmic, depending on the other object
+//			endX = this.endNode.cx; // TODO this should be dyanmic, depending on the other object
+//			endY = this.endNode.cy; // - WIDTH_HEIGHT; // TODO this should be dyanmic, depending on the other object
 		}
 
 		this.lineElement.setAttribute("x1", startX);
