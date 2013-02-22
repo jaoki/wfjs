@@ -21,8 +21,8 @@ var DIAMOND_DEFAULT_ATTRIBUTES = {
 	stroke: "yellow",
 	"stroke-width": "2",
 	fill: "DarkSeaGreen",
-	width : 60,
-	height : 60,
+//	width : 60,
+//	height : 60,
 	filter: "url(#dropshadow1)",
 	style: "cursor: move;",
 };
@@ -225,6 +225,7 @@ wfjs1.CircleNode = (function () {
 
 wfjs1.DiamondNode = (function () {
 	var index = 0; 
+	var WIDTH_HEIGHT = 45;
 
     function DiamondNode(canvas, cx, cy, label){
 		this.id = "wfjs_diamond_node_" + index;
@@ -234,14 +235,17 @@ wfjs1.DiamondNode = (function () {
         this.cy = cy;
         this.label = label;
 
-		this.rectElement = document.createElementNS(SVGNS, "rect");
-		this.rectElement.addEventListener("mousedown", this.canvas._onMouseDown, false);
-		this.rectElement.setAttribute("id", this.id);
 
+
+		this.diaPathElm = document.createElementNS(SVGNS, "path");
+		this.diaPathElm.setAttribute("id", this.id);
+		this.diaPathElm.setAttribute("fill", "black");
+		this.diaPathElm.setAttribute("stroke", "black");
+		this.diaPathElm.addEventListener("mousedown", this.canvas._onMouseDown, false);
 		for(var name in DIAMOND_DEFAULT_ATTRIBUTES){
-			this.rectElement.setAttribute(name, DIAMOND_DEFAULT_ATTRIBUTES[name]);
+			this.diaPathElm.setAttribute(name, DIAMOND_DEFAULT_ATTRIBUTES[name]);
 		}
-		this.canvas.svgElement.appendChild(this.rectElement);
+		this.canvas.svgElement.appendChild(this.diaPathElm);
 
 		// label
 		this.labelTextElement = document.createElementNS(SVGNS, "text");
@@ -257,17 +261,21 @@ wfjs1.DiamondNode = (function () {
 
 	DiamondNode.prototype = new wfjs1.BaseNode();
 
-    DiamondNode.prototype.move = function(cx, cy) {
+    DiamondNode.prototype.move = function(cx, cy){
 		this.cx = cx;
 		this.cy = cy;
 
-		this.rectElement.setAttribute("transform", "rotate(45 " + cx + " " + cy + ")");
-		this.rectElement.setAttribute("x", cx);
-		this.rectElement.setAttribute("y", cy); // TODO this should be adjusted
+
+		this.diaPathElm.setAttribute("d", 
+				"M" + cx + " " + (cy - WIDTH_HEIGHT) // start point
+				+ " l-" + WIDTH_HEIGHT + " " + WIDTH_HEIGHT // first line 
+				+ " l" + WIDTH_HEIGHT + " " + WIDTH_HEIGHT // second line 
+				+ " l" + WIDTH_HEIGHT + " -" + WIDTH_HEIGHT // third line 
+				+ " Z");
 
 		var rect = this.labelTextElement.getBBox();
 		this.labelTextElement.setAttribute("x", cx - (rect.width/2));
-		this.labelTextElement.setAttribute("y", cy + 46); // TODO magic number // TODO this should be adjusted
+		this.labelTextElement.setAttribute("y", cy + (rect.height/4)); // TODO why divided by 4?
 		for(var i = 0; i < this.flowlines.length; i++){
 			this.flowlines[i].relocate();
 		}
@@ -315,6 +323,8 @@ wfjs1.FlowLine = (function () {
 			endX = this.endNode.circle_attrs.r * Math.cos(endRadian) + this.endNode.cx;
 			endY = this.endNode.circle_attrs.r * Math.sin(endRadian) + this.endNode.cy;
 		}else if(this.endNode instanceof wfjs1.DiamondNode){
+//			Math.cos(Math.PI / 180 * 45) * 60
+			
 			endX = this.endNode.cx;
 			endY = this.endNode.cy;
 		}

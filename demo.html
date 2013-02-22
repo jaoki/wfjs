@@ -32,7 +32,9 @@ var circle2 = new wfjs.CircleNode(canvas1, 40, 150, "second", {
 		fill: "yellow",
 });
 
-var circle3 = new wfjs.CircleNode(canvas1, 300, 150, "THIRD");
+var circle3 = new wfjs.CircleNode(canvas1, 290, 150, "THIRD");
+var dia1 = new wfjs.DiamondNode(canvas1, 200, 150, "decision1");
+
 var circle4 = new wfjs.CircleNode(canvas1, 180, 250, "4th Unconnected");
 var circle5 = new wfjs.CircleNode(canvas1, 250, 300, "五");
 
@@ -41,7 +43,6 @@ circle2.show();
 circle3.show();
 circle4.show();
 circle5.show();
-var dia1 = new wfjs.DiamondNode(canvas1, 200, 130, "decision1");
 var dia2 = new wfjs.DiamondNode(canvas1, 10, 10, "kij 10x10");
 
 circle1.connectTo(circle2);
