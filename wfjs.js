@@ -124,8 +124,8 @@ wfjs1.Canvas = (function () {
 	Canvas.prototype._onMouseDown = function(e){
 		var targetId = e.target.getAttribute("id");
 		draggingNode = _canvasInstance.nodes.getById(targetId);
-		draggingNodeOffset.x = e.pageX - _canvasInstance.offsetBase().x - draggingNode.x;
-		draggingNodeOffset.y = e.pageY - _canvasInstance.offsetBase().y - draggingNode.y;
+		draggingNodeOffset.x = e.pageX - _canvasInstance.offsetBase().x - draggingNode.cx;
+		draggingNodeOffset.y = e.pageY - _canvasInstance.offsetBase().y - draggingNode.cy;
 		e.preventDefault();
 	};
 
@@ -149,12 +149,12 @@ wfjs1.BaseNode = (function () {
 wfjs1.CircleNode = (function () {
 	var index = 0; 
 
-    function CircleNode(canvas, x, y, label, circle_attrs, text_options) {
+    function CircleNode(canvas, cx, cy, label, circle_attrs, text_options) {
 		this.id = "wfjs_circle_node_" + index;
 		index++;
         this.canvas = canvas;
-        this.x = x;
-        this.y = y;
+        this.cx = cx;
+        this.cy = cy;
         this.label = label;
 
 		this.circle_attrs = {};
@@ -201,19 +201,19 @@ wfjs1.CircleNode = (function () {
 		this.labelTextElement = textElement;
 		this.canvas.nodes.push(this);
 
-		this.move(this.x, this.y);
+		this.move(this.cx, this.cy);
 
     }; // End of show()
 
-    CircleNode.prototype.move = function(x, y) {
-		this.x = x;
-		this.y = y;
-		this.circleElement.setAttribute("cx", x);
-		this.circleElement.setAttribute("cy", y);
+    CircleNode.prototype.move = function(cx, cy) {
+		this.cx = cx;
+		this.cy = cy;
+		this.circleElement.setAttribute("cx", cx);
+		this.circleElement.setAttribute("cy", cy);
 		// label position
 		var rect = this.labelTextElement.getBBox();
-		this.labelTextElement.setAttribute("x", x - (rect.width/2));
-		this.labelTextElement.setAttribute("y", y + 5); // TODO what is this magic number?
+		this.labelTextElement.setAttribute("x", cx - (rect.width/2));
+		this.labelTextElement.setAttribute("y", cy + 5); // TODO what is this magic number?
 		for(var i = 0; i < this.flowlines.length; i++){
 			this.flowlines[i].relocate();
 		}
@@ -226,12 +226,12 @@ wfjs1.CircleNode = (function () {
 wfjs1.DiamondNode = (function () {
 	var index = 0; 
 
-    function DiamondNode(canvas, x, y, label){
+    function DiamondNode(canvas, cx, cy, label){
 		this.id = "wfjs_diamond_node_" + index;
 		index++;
 		this.canvas = canvas;
-        this.x = x;
-        this.y = y;
+        this.cx = cx;
+        this.cy = cy;
         this.label = label;
 
 		this.rectElement = document.createElementNS(SVGNS, "rect");
@@ -252,22 +252,22 @@ wfjs1.DiamondNode = (function () {
 
 		this.flowlines = [];
 
-		this.move(x, y);
+		this.move(cx, cy);
 	};
 
 	DiamondNode.prototype = new wfjs1.BaseNode();
 
-    DiamondNode.prototype.move = function(x, y) {
-		this.x = x;
-		this.y = y;
+    DiamondNode.prototype.move = function(cx, cy) {
+		this.cx = cx;
+		this.cy = cy;
 
-		this.rectElement.setAttribute("transform", "rotate(45 " + x + " " + y + ")");
-		this.rectElement.setAttribute("x", x);
-		this.rectElement.setAttribute("y", y);
+		this.rectElement.setAttribute("transform", "rotate(45 " + cx + " " + cy + ")");
+		this.rectElement.setAttribute("x", cx);
+		this.rectElement.setAttribute("y", cy); // TODO this should be adjusted
 
 		var rect = this.labelTextElement.getBBox();
-		this.labelTextElement.setAttribute("x", x - (rect.width/2));
-		this.labelTextElement.setAttribute("y", y + 46); // TODO magic number
+		this.labelTextElement.setAttribute("x", cx - (rect.width/2));
+		this.labelTextElement.setAttribute("y", cy + 46); // TODO magic number // TODO this should be adjusted
 		for(var i = 0; i < this.flowlines.length; i++){
 			this.flowlines[i].relocate();
 		}
@@ -302,21 +302,21 @@ wfjs1.FlowLine = (function () {
 		var startX, startY, endX, endY;
 		if(this.startNode instanceof wfjs1.CircleNode){
 			// The line end should not be the center of the target object, since it needs an arrow mark.
-			var startRadian = Math.atan2(this.endNode.y - this.startNode.y, this.endNode.x - this.startNode.x);
-			startX = this.startNode.circle_attrs.r * Math.cos(startRadian) + this.startNode.x;
-			startY = this.startNode.circle_attrs.r * Math.sin(startRadian) + this.startNode.y;
+			var startRadian = Math.atan2(this.endNode.cy - this.startNode.cy, this.endNode.cx - this.startNode.cx);
+			startX = this.startNode.circle_attrs.r * Math.cos(startRadian) + this.startNode.cx;
+			startY = this.startNode.circle_attrs.r * Math.sin(startRadian) + this.startNode.cy;
 		}else if(this.startNode instanceof wfjs1.DiamondNode){
-			startX = this.startNode.x;
-			startY = this.startNode.y;
+			startX = this.startNode.cx;
+			startY = this.startNode.cy;
 		}
 
-		var endRadian = Math.atan2(this.startNode.y - this.endNode.y, this.startNode.x - this.endNode.x);
+		var endRadian = Math.atan2(this.startNode.cy - this.endNode.cy, this.startNode.cx - this.endNode.cx);
 		if(this.endNode instanceof wfjs1.CircleNode){
-			endX = this.endNode.circle_attrs.r * Math.cos(endRadian) + this.endNode.x;
-			endY = this.endNode.circle_attrs.r * Math.sin(endRadian) + this.endNode.y;
+			endX = this.endNode.circle_attrs.r * Math.cos(endRadian) + this.endNode.cx;
+			endY = this.endNode.circle_attrs.r * Math.sin(endRadian) + this.endNode.cy;
 		}else if(this.endNode instanceof wfjs1.DiamondNode){
-			endX = this.endNode.x;
-			endY = this.endNode.y;
+			endX = this.endNode.cx;
+			endY = this.endNode.cy;
 		}
 
 		this.lineElement.setAttribute("x1", startX);
