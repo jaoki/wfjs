@@ -59,7 +59,7 @@ wfjs1.Canvas = (function () {
 
 		this.containerDivElm = document.createElement("div");
 		this.containerDivElm.setAttribute("id", "wfjs_container_div");
-		this.containerDivElm.setAttribute("style", "margin: 0px; padding 0px; width: " + width + "px; height: " + height + ";");
+		this.containerDivElm.setAttribute("style", "margin: 0px; padding 0px; width: " + width + "px; height: " + height + "px;");
 		this.targetElement.appendChild(this.containerDivElm);
 
 		var svgElement = document.createElementNS(SVGNS, "svg");
