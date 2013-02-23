@@ -64,7 +64,7 @@ wfjs1.Canvas = (function () {
 
 		var svgElement = document.createElementNS(SVGNS, "svg");
 		svgElement.setAttribute("id", "wfjs_svg");
-		svgElement.setAttribute("style", "width: " + width + "px; height: " + height + ";");
+		svgElement.setAttribute("style", "width: " + width + "px; height: " + height + "px;");
 		svgElement.setAttribute("version", "1.1");
 		//svgElement.addEventListener("mouseup", _onMouseUp, false);
 //		svgElement.addEventListener("mousemove", _onMouseMove, true);
